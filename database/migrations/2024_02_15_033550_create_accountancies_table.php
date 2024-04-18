@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('cnpj')->unique()->nullable();
-            $table->string('registry')->unique()->nullable();
+            $table->string('registry')->nullable();
             $table->boolean('status')->nullable();
             $table->string('email')->nullable();
             $table->date('openingData')->nullable();

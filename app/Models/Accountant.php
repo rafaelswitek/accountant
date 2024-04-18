@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use App\Helpers\Number;
+use App\Helpers\Text;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Accountant extends Model
 {
@@ -10,7 +15,9 @@ class Accountant extends Model
         'name',
         'cpf',
         'registry',
-        'cfc',
+        'status',
+        'email',
+        'birthData'
     ];
 
     protected $casts = [
@@ -19,14 +26,32 @@ class Accountant extends Model
 
     public static function storeFromCFC(array $data)
     {
-        foreach ($data as $item) {
-            $accountant = new Accountant();
-            $accountant->name = $item['campo1'];
-            $accountant->cpf = $item['campo2'];
-            $accountant->registry = $item['campo2'];
-            $accountant->cfc = $item;
+        $upsertData = [];
+        $log = [];
 
-            $accountant->save();
+        try {
+            DB::beginTransaction();
+
+            foreach ($data as $item) {
+                $upsertData[] = [
+                    'name' => Text::sanitize($item['Nome']),
+                    'cpf' => Arr::has($item, 'CpfCnpj') ? Number::onlyNumbers($item['CpfCnpj']) : null,
+                    'registry' => $item['Registro'],
+                    'status' => $item['SituacaoCadastral'] == 'Ativo',
+                ];
+                $log[] = [
+                    'origin' => 'cfc',
+                    'payload' => json_encode($item)
+                ];
+            }
+
+            self::upsert($upsertData, ['cpf']);
+
+            RegistrationLog::insert($log);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('[DB][STORE][CFC]: ', ['message' => $e->getMessage()]);
         }
     }
 }
