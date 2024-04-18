@@ -10,4 +10,6 @@ class RegistrationLog extends Model
         'origin',
         'payload',
     ];
+
+    public $timestamps = true;
 }

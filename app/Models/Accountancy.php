@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\Number;
 use App\Helpers\Text;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -34,7 +35,7 @@ class Accountancy extends Model
             foreach ($data as $item) {
                 $upsertData[] = [
                     'name' => Text::sanitize($item['Nome']),
-                    'cnpj' => Number::onlyNumbers($item['CpfCnpj']),
+                    'cnpj' => Arr::has($item, 'CpfCnpj') ? Number::onlyNumbers($item['CpfCnpj']) : null,
                     'registry' => $item['Registro'],
                     'status' => $item['SituacaoCadastral'] == 'Ativo',
                 ];

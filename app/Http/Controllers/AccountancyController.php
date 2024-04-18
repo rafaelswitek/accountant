@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Accountancy;
-use App\Services\ReadTXTService;
+use App\Services\CFCService;
 
 class AccountancyController extends Controller
 {
     public function getAccountancy()
     {
-        $txtService = new ReadTXTService();
-        $result = $txtService->readFile('app/contabilidades.txt');
+        $skip = 0;
+        $take = 10;
 
-        Accountancy::storeFromCFC($result['data']);
+        $service = new CFCService();
 
-        return Accountancy::paginate(10);
+        do {
+            $result = $service->accountancy('AC', $skip, $take);
+            Accountancy::storeFromCFC($result['data']);
+            $skip += $take;
+        } while ($skip <= $result['totalCount']);
     }
 }
