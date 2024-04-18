@@ -45,7 +45,7 @@ class Accountancy extends Model
                 ];
             }
 
-            self::upsert($upsertData, ['cnpj']);
+            self::upsert($upsertData, ['cnpj', 'registry']);
 
             RegistrationLog::insert($log);
             DB::commit();
