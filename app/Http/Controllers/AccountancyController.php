@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Accountancy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,19 +9,20 @@ class AccountancyController extends Controller
 {
     public function index()
     {
-        $name = null;
-        $registros = Accountancy::limit(10)->get();
-        return view('dashboard', compact('registros', 'name'));
+        return view('dashboard');
     }
 
-    public function filtrar(Request $request)
+    public function get(Request $request)
     {
-        $name = $request->name ?? null;
+        $param = $request->param ?? null;
+        $state = $request->state ?? null;
 
         return DB::table('accountancies')
-            ->where('registry', 'like', "GO%")
-            ->when($name, function ($query) use ($name) {
-                return $query->where('name', 'like', "%{$name}%");
+            ->when($state, function ($query) use ($state) {
+                return $query->where('registry', 'like', "{$state}%");
+            })
+            ->when($param, function ($query) use ($param) {
+                return $query->where('name', 'like', "%{$param}%");
             })
             ->paginate(10);
     }

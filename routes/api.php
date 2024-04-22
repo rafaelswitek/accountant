@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\AccountancyController;
-use App\Http\Controllers\AccountantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +17,3 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('/accountancy', [AccountancyController::class, 'getAccountancy']);
-Route::get('/accountant', [AccountantController::class, 'getAccountant']);
