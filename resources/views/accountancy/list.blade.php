@@ -20,8 +20,9 @@
                         type="button">Limpar</button>
                     <div id="dropdownAction"
                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton"
-                            id="estados">
+                        <ul class="py-1 text-sm text-gray-700 dark:texft-gray-200"
+                            aria-labelledby="dropdownActionButton" id="statesList"
+                            style="height: 400px;overflow: auto;">
                         </ul>
                     </div>
                 </div>
@@ -36,7 +37,7 @@
                     </div>
                     <input type="text" id="searchInput"
                         class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Buscar por nome">
+                        placeholder="Buscar">
                 </div>
             </div>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -61,9 +62,9 @@
             <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between p-4"
                 aria-label="Table navigation">
                 <span
-                    class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing
+                    class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando
                     <span class="font-semibold text-gray-900 dark:text-white"><span id="fromResults">0</span>-<span
-                            id="toResults">0</span></span> of <span class="font-semibold text-gray-900 dark:text-white"
+                            id="toResults">0</span></span> de <span class="font-semibold text-gray-900 dark:text-white"
                         id="totalResults">0</span></span>
                 <div id="pagination"></div>
             </nav>
@@ -72,7 +73,7 @@
 </div>
 
 <script>
-    const estadosBrasileiros = {
+    const brazilianStates = {
         AC: 'Acre',
         AL: 'Alagoas',
         AP: 'Amapá',
@@ -102,15 +103,23 @@
         TO: 'Tocantins'
     };
 
-    for (const sigla in estadosBrasileiros) {
-        const tempContainer = document.createElement('li');
-        const nomeEstado = estadosBrasileiros[sigla];
-        tempContainer.innerHTML =
-            `<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white changeStage" data-state="${sigla}">${nomeEstado}</a>`
-        document.getElementById('estados').appendChild(tempContainer)
+    init()
+
+    function init() {
+        getData()
+        listStates()
     }
 
-    getData()
+    function listStates() {
+        for (const state in brazilianStates) {
+            const li = document.createElement('li');
+            li.innerHTML = '';
+            const stateName = brazilianStates[state];
+            li.innerHTML =
+                `<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white changeStage" data-state="${state}">${stateName}</a>`
+            document.getElementById('statesList').appendChild(li)
+        }
+    }
 
     function getData(page = 1) {
         const apiUrl = window.location.origin + '/accountant';
@@ -122,11 +131,7 @@
         };
 
         const url = new URL(apiUrl);
-        Object.entries(queryParams).forEach(([key, value]) => {
-            if (value) {
-                url.searchParams.append(key, value);
-            }
-        });
+        Object.entries(queryParams).forEach(([key, value]) => value ? url.searchParams.append(key, value) : null);
 
         fetch(url)
             .then(response => {
@@ -208,23 +213,35 @@
         pagination.appendChild(ul)
     }
 
-    function aplicarMascaraCNPJ(cnpj) {
+    function maskCNPJ(cnpj) {
         cnpj = cnpj.replace(/\D/g, '');
+        return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+    }
 
-        cnpj = cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+    function extractInitial(name) {
+        const words = name.split(" ");
 
-        return cnpj;
+        let initials = "";
+
+        initials += words[0].charAt(0).toUpperCase();
+
+        if (words.length > 1) {
+            initials += words[words.length - 1].charAt(0).toUpperCase();
+        }
+
+        return initials;
     }
 
     function parseData(data) {
         return `
             <th scope="row"
                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                <img class="w-10 h-10 rounded-full" src="/img/company.png"
-                    alt="Jese image">
+                <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                    <span class="font-medium text-gray-600 dark:text-gray-300">${extractInitial(data.name)}</span>
+                </div>
                 <div class="ps-3">
                     <div class="text-base font-semibold">${data.name}</div>
-                    <div class="font-normal text-gray-500">${aplicarMascaraCNPJ(data.cnpj)}</div>
+                    <div class="font-normal text-gray-500">${maskCNPJ(data.cnpj)}</div>
                 </div>
             </th>
             <td class="px-6 py-4">
@@ -236,7 +253,7 @@
                 </div>
             </td>
             <td class="px-6 py-4">
-                <a href="#" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                <a href="/accountancy/${data.id}" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
             </td>
         `
     }
@@ -255,7 +272,7 @@
             const state = this.getAttribute('data-state');
 
             const textDropdown = document.getElementById('textDropdown')
-            textDropdown.innerHTML = estadosBrasileiros[state];
+            textDropdown.innerHTML = brazilianStates[state];
             textDropdown.setAttribute("data-state", state)
             document.getElementById('dropdownActionButton').click()
             getData()

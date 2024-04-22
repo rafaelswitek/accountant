@@ -22,7 +22,11 @@ class AccountancyController extends Controller
                 return $query->where('registry', 'like', "{$state}%");
             })
             ->when($param, function ($query) use ($param) {
-                return $query->where('name', 'like', "%{$param}%");
+                return $query->where(function ($query) use ($param) {
+                    $query->where('name', 'like',"%{$param}%")
+                        ->orWhere('cnpj', 'like',"%{$param}%")
+                        ->orWhere('registry', 'like',"%{$param}%");
+                });
             })
             ->paginate(10);
     }
