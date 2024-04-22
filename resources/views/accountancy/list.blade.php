@@ -62,38 +62,10 @@
                 aria-label="Table navigation">
                 <span
                     class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing
-                    <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span
-                        class="font-semibold text-gray-900 dark:text-white">1000</span></span>
-                <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                            class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
-                </ul>
+                    <span class="font-semibold text-gray-900 dark:text-white"><span id="fromResults">0</span>-<span
+                            id="toResults">0</span></span> of <span class="font-semibold text-gray-900 dark:text-white"
+                        id="totalResults">0</span></span>
+                <div id="pagination"></div>
             </nav>
         </div>
     </div>
@@ -140,12 +112,13 @@
 
     getData()
 
-    function getData() {
+    function getData(page = 1) {
         const apiUrl = window.location.origin + '/accountant';
         const textDropdown = document.getElementById('textDropdown')
         const queryParams = {
             param: document.getElementById('searchInput').value,
             state: textDropdown.getAttribute('data-state'),
+            page: page
         };
 
         const url = new URL(apiUrl);
@@ -170,14 +143,69 @@
                     tempContainer.className =
                         "bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                     tempContainer.innerHTML = parseData(result);
-                    const resultElement = tempContainer;
 
-                    searchResults.appendChild(resultElement);
+                    searchResults.appendChild(tempContainer);
+
+                    document.getElementById('fromResults').innerHTML = results.from
+                    document.getElementById('toResults').innerHTML = results.to
+                    document.getElementById('totalResults').innerHTML = results.total
                 });
+                pagination(results.links)
             })
             .catch(error => {
                 console.error('Erro:', error);
             });
+    }
+
+    function createLink(link) {
+        let classe =
+            "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white";
+
+        if (link.label == '&laquo; Anterior') {
+            classe =
+                "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        }
+
+        if (link.label == 'Próximo &raquo;') {
+            classe =
+                "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        }
+
+        if (link.active) {
+            classe =
+                "flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+        }
+
+        const page = getPageFromUrl(link.url)
+
+        return `
+        <li>
+            <button data-page="${page}" class="pageLink ${classe}" ${link.url == null || link.active == true ? 'disabled' : ''}>${link.label}</button>
+        </li>
+        `
+    }
+
+    function getPageFromUrl(url) {
+        if (url) {
+            var url = new URL(url);
+            var params = new URLSearchParams(url.search);
+            return params.get("page");
+        }
+
+        return null
+    }
+
+    function pagination(links) {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+        const ul = document.createElement('ul');
+        ul.className = "inline-flex -space-x-px rtl:space-x-reverse text-sm h-8"
+
+        links.forEach(link => {
+            ul.innerHTML = ul.innerHTML + createLink(link);
+        })
+
+        pagination.appendChild(ul)
     }
 
     function aplicarMascaraCNPJ(cnpj) {
@@ -230,7 +258,7 @@
             textDropdown.innerHTML = estadosBrasileiros[state];
             textDropdown.setAttribute("data-state", state)
             document.getElementById('dropdownActionButton').click()
-            getData(state)
+            getData()
         });
     });
 
@@ -246,4 +274,11 @@
     }
 
     document.getElementById('searchInput').addEventListener('input', aguardarDigitacao);
+
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('pageLink')) {
+            const page = event.target.getAttribute('data-page');
+            getData(page);
+        }
+    });
 </script>
