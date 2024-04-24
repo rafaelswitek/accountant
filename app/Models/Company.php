@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\Number;
 use App\Helpers\Text;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +28,11 @@ class Company extends Model
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    public function customFields(): HasMany
+    {
+        return $this->hasMany(CustomFieldValue::class);
+    }
 
     public static function storeFromCFC(array $data)
     {

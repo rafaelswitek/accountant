@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/companies', [CompanyController::class, 'get']);
     Route::get('/companies/{id}', [CompanyController::class, 'show']);
+    Route::put('/companies/{id}', [CompanyController::class, 'update'])->name('company.update');
 });
 
 require __DIR__.'/auth.php';

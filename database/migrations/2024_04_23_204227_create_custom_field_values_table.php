@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('custom_fields_values', function (Blueprint $table) {
+        Schema::create('custom_field_values', function (Blueprint $table) {
             $table->id();
             $table->foreignId('field_id')->nullable()->references('id')->on('custom_fields')->onDelete('cascade');
             $table->foreignId('company_id')->nullable()->references('id')->on('companies')->onDelete('cascade');
             $table->foreignId('person_id')->nullable()->references('id')->on('people')->onDelete('cascade');
-            $table->json('value');
+            $table->json('info')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_fields_values');
+        Schema::dropIfExists('custom_field_values');
     }
 };

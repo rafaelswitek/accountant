@@ -17,8 +17,6 @@ class CompanySeeder extends Seeder
             ['document' => '40215418000130', 'name' => 'Emitte Solucoes B2b Ltda', 'trade' => 'Emitte', 'status' => true, 'phone' => '6230982122', 'email' => 'email@emitte.com.br'],
         ];
 
-        foreach ($companies as $company) {
-            Company::create($company);
-        }
+        Company::insert($companies);
     }
 }

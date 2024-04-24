@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('trade')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->date('openingData')->nullable();
             $table->boolean('status')->nullable();
             $table->json('keys')->nullable();
             $table->string('origin')->nullable();
