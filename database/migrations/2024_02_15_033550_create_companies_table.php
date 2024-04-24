@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accountancies', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
+            $table->string('document')->unique()->nullable();
             $table->string('name');
-            $table->string('cnpj')->unique()->nullable();
-            $table->string('registry')->nullable();
-            $table->boolean('status')->nullable();
+            $table->string('trade')->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->date('openingData')->nullable();
+            $table->boolean('status')->nullable();
+            $table->json('keys')->nullable();
+            $table->string('origin')->nullable();
+            $table->text('photo')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accountancies');
+        Schema::dropIfExists('companies');
     }
 };

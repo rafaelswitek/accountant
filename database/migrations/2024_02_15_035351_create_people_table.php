@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accountants', function (Blueprint $table) {
+        Schema::create('people', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->string('document')->unique()->nullable();
             $table->string('name');
-            $table->string('cpf')->unique()->nullable();
-            $table->string('registry')->nullable();
-            $table->boolean('status')->nullable();
             $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->date('birthData')->nullable();
+            $table->boolean('status')->nullable();
+            $table->json('keys')->nullable();
+            $table->string('origin')->nullable();
+            $table->text('photo')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accountants');
+        Schema::dropIfExists('people');
     }
 };
