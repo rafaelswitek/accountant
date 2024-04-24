@@ -9,15 +9,19 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class Accountancy extends Model
+class Company extends Model
 {
     protected $fillable = [
+        'document',
         'name',
-        'cnpj',
-        'registry',
-        'status',
+        'trade',
+        'phone',
         'email',
-        'openingData'
+        'openingData',
+        'status',
+        'keys',
+        'origin',
+        'photo',
     ];
 
     protected $casts = [

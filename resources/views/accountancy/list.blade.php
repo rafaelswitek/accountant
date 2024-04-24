@@ -125,7 +125,7 @@
     }
 
     function getData(page = 1) {
-        const apiUrl = window.location.origin + '/accountant';
+        const apiUrl = window.location.origin + '/companies';
         const textDropdown = document.getElementById('textDropdown')
         const queryParams = {
             param: document.getElementById('searchInput').value,
@@ -240,12 +240,12 @@
             <th scope="row"
                 class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                 <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                    <span class="font-medium text-gray-600 dark:text-gray-300">${extractInitial(data.name)}</span>
+                    <span class="font-medium text-gray-600 dark:text-gray-300">${extractInitial(data.trade ?? data.name)}</span>
                 </div>
                 <div class="ps-3">
-                    <div class="text-base font-semibold">${data.name}</div>
-                    <div class="font-medium text-gray-500">${maskCNPJ(data.cnpj)}</div>
-                    <div class="font-normal text-gray-500">${data.registry}</div>
+                    <div class="text-base font-semibold">${data.trade}</div>
+                    <div class="font-medium text-gray-500">${maskCNPJ(data.document)}</div>
+                    <div class="font-normal text-gray-500">${data.name}</div>
                 </div>
             </th>
             <td class="px-6 py-4">
