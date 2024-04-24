@@ -47,7 +47,10 @@
                             Contabilidade
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Registro
+                            Telefone
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Email
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -241,11 +244,15 @@
                 </div>
                 <div class="ps-3">
                     <div class="text-base font-semibold">${data.name}</div>
-                    <div class="font-normal text-gray-500">${maskCNPJ(data.cnpj)}</div>
+                    <div class="font-medium text-gray-500">${maskCNPJ(data.cnpj)}</div>
+                    <div class="font-normal text-gray-500">${data.registry}</div>
                 </div>
             </th>
             <td class="px-6 py-4">
-                ${data.registry}
+                ${data.phone ?? '-'}
+            </td>
+            <td class="px-6 py-4">
+                ${data.email ?? '-'}
             </td>
             <td class="px-6 py-4">
                 <div class="flex items-center">
