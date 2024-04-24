@@ -8,8 +8,10 @@ use App\Models\CustomFieldValue;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class CompanyController extends Controller
 {
@@ -34,15 +36,15 @@ class CompanyController extends Controller
             ->paginate(10);
     }
 
-    public function show(int $id): View
+    public function edit(int $id): View
     {
         $company = Company::find($id);
         $customFields = $this->getCustomFields($id);
 
-        return view('company.show', compact('company', 'customFields'));
+        return view('company.edit', compact('company', 'customFields'));
     }
 
-    public function update(Request $request, int $id): View
+    public function update(Request $request, int $id): RedirectResponse
     {
         $data = $request->all();
 
@@ -54,7 +56,7 @@ class CompanyController extends Controller
 
         $customFields = $this->getCustomFields($id);
 
-        return view('company.show', compact('company', 'customFields'));
+        return Redirect::route('company.edit', compact('id', 'company', 'customFields'))->with('status', 'company-updated');
     }
 
     private function getCustomFields(int $companyId): Collection
