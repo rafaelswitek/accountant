@@ -5,5 +5,5 @@
         </h2>
     </x-slot>
 
-    @include('accountancy.list')
+    @include('company.list')
 </x-app-layout>

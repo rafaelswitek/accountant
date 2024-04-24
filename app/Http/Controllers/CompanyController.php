@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,5 +27,11 @@ class CompanyController extends Controller
                 });
             })
             ->paginate(10);
+    }
+
+    public function show(int $id)
+    {
+        $company = Company::find($id);
+        return view('company.show', $company);
     }
 }
