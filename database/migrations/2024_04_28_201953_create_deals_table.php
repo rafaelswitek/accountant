@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stages', function (Blueprint $table) {
+        Schema::create('deals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('funnel_id')->constrained()->onDelete('cascade');
+            $table->foreignId('stage_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->integer('order');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stages');
+        Schema::dropIfExists('deals');
     }
 };

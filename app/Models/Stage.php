@@ -8,14 +8,8 @@ class Stage extends Model
 {
     protected $fillable = ['name', 'order', 'funnel_id'];
 
-    /**
-     * Registre um observador para a classe.
-     *
-     * @return void
-     */
     protected static function booted()
     {
-        // Adicione a cláusula orderBy por padrão
         static::addGlobalScope('order', function ($query) {
             $query->orderBy('order');
         });
@@ -24,5 +18,10 @@ class Stage extends Model
     public function funnel()
     {
         return $this->belongsTo(Funnel::class);
+    }
+
+    public function deals()
+    {
+        return $this->hasMany(Deal::class);
     }
 }

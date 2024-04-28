@@ -22,7 +22,7 @@ class CompanyController extends Controller
         $funnelId = 1;
         $funnels = Funnel::all();
         $funnilSelected = Funnel::find($funnelId);
-        $stages = Stage::where('funnel_id', $funnelId)->get();
+        $stages = Stage::with('deals')->where('funnel_id', $funnelId)->get();
         return view('dashboard', compact('funnels', 'stages', 'funnilSelected'));
     }
 

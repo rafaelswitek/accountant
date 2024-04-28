@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             CustomFieldsSeeder::class,
             FunnelSeeder::class,
             StageSeeder::class,
+            DealSeeder::class,
         ]);
     }
 }

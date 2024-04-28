@@ -14,6 +14,7 @@ class StageSeeder extends Seeder
     {
         Stage::create(['name' => 'Lead', 'order' => 1, 'funnel_id' => 1]);
         Stage::create(['name' => 'Prospect', 'order' => 2, 'funnel_id' => 1]);
+        Stage::create(['name' => 'Customer', 'order' => 3, 'funnel_id' => 1]);
         Stage::create(['name' => 'Cliente', 'order' => 1, 'funnel_id' => 2]);
         Stage::create(['name' => 'Assinante', 'order' => 2, 'funnel_id' => 2]);
     }
