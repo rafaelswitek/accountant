@@ -5,5 +5,6 @@
         </h2>
     </x-slot>
 
-    @include('company.list')
+    {{-- @include('company.list') --}}
+    @include('kanban')
 </x-app-layout>
