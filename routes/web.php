@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,16 +21,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [CompanyController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/companies', [CompanyController::class, 'get']);
-    Route::get('/companies/{id}', [CompanyController::class, 'edit'])->name('company.edit');
-    Route::put('/companies/{id}', [CompanyController::class, 'update'])->name('company.update');
+    Route::get('/company', [CompanyController::class, 'index']);
+    Route::get('/company/list', [CompanyController::class, 'get']);
+    Route::get('/company/{id}', [CompanyController::class, 'edit'])->name('company.edit');
+    Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
+
+    Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline');
 });
 
 require __DIR__ . '/auth.php';

@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\CustomField;
 use App\Models\CustomFieldValue;
-use App\Models\Funnel;
-use App\Models\Stage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,11 +17,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $funnelId = 1;
-        $funnels = Funnel::all();
-        $funnilSelected = Funnel::find($funnelId);
-        $stages = Stage::with('deals')->where('funnel_id', $funnelId)->get();
-        return view('dashboard', compact('funnels', 'stages', 'funnilSelected'));
+        return view('company.index');
     }
 
     public function get(Request $request): LengthAwarePaginator

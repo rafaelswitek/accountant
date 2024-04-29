@@ -125,7 +125,7 @@
     }
 
     function getData(page = 1) {
-        const apiUrl = window.location.origin + '/companies';
+        const apiUrl = window.location.origin + '/company/list';
         const textDropdown = document.getElementById('textDropdown')
         const queryParams = {
             param: document.getElementById('searchInput').value,
@@ -260,7 +260,7 @@
                 </div>
             </td>
             <td class="px-6 py-4">
-                <a href="/companies/${data.id}" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                <a href="/company/${data.id}" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
             </td>
         `
     }

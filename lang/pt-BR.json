@@ -27,7 +27,7 @@
   "Create New Team": "Criar um novo Time",
   "Created.": "Criado.",
   "Current Password": "Senha Atual",
-  "Dashboard": "Painel de controle",
+  "Dashboard": "Dashboard",
   "Delete": "Deletar",
   "Delete API Token": "Deletar o Token de API",
   "Delete Account": "Deletar Conta",
@@ -146,5 +146,6 @@
   "Remove this person from the team.": "Remova esta pessoa do time.",
   "Administrator users can perform any action.": "O administrador pode realizar qualquer ação.",
   "Editor users have the ability to read, create, and update.": "O editor pode ler, criar e atualizar",
-  "Remove": "Remover"
+  "Remove": "Remover",
+  "Companies": "Empresas"
 }
