@@ -111,7 +111,6 @@
     }
 
     function dragLeave() {
-        console.log('dragLeave')
     }
 
     function drop() {
@@ -123,7 +122,31 @@
             this.appendChild(draggedItem);
             draggedItem = null;
             this.classList.remove("hovered");
-            showAlert(`${dealName} inserido no ${stageName}`)
+
+            const data = {
+                dealId,
+                stageId,
+            };
+
+            const options = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(data)
+            };
+
+            fetch('/pipeline/update-deal', options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na solicitação');
+                    }
+                    showAlert(`${dealName} inserido no ${stageName}`)
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
         }
     }
 </script>
