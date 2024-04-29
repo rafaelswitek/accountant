@@ -9,7 +9,7 @@
                 <div class="flex items-center flex-shrink-0 h-10 px-2">
                     <span class="block text-sm font-semibold">{{ $stage->name }}</span>
                     <span
-                        class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30">{{ $stage->deals->count() }}</span>
+                        class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30 count-span">{{ $stage->deals->count() }}</span>
                     <button
                         class="flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,9 +94,22 @@
     function dragStart() {
         draggedItem = this;
         this.classList.add("dragging");
+
+        const sourceStageId = draggedItem.closest('.droppable').dataset.stageId;
+        const sourceStage = document.querySelector(`.droppable[data-stage-id="${sourceStageId}"]`);
+        const countSpan = sourceStage.querySelector('.count-span');
+        const newCount = parseInt(countSpan.textContent) - 1;
+        countSpan.textContent = newCount;
     }
 
     function dragEnd() {
+        if (draggedItem !== null) {
+            const sourceStageId = draggedItem.closest('.droppable').dataset.stageId;
+            const sourceStage = document.querySelector(`.droppable[data-stage-id="${sourceStageId}"]`);
+            const countSpan = sourceStage.querySelector('.count-span');
+            const newCount = parseInt(countSpan.textContent) + 1;
+            countSpan.textContent = newCount;
+        }
         draggedItem = null;
         this.classList.remove("dragging");
     }
@@ -110,8 +123,7 @@
         this.classList.add("hovered");
     }
 
-    function dragLeave() {
-    }
+    function dragLeave() {}
 
     function drop() {
         if (draggedItem !== null) {
@@ -122,6 +134,10 @@
             this.appendChild(draggedItem);
             draggedItem = null;
             this.classList.remove("hovered");
+
+            const countSpan = this.querySelector('.count-span');
+            const newCount = parseInt(countSpan.textContent) + 1;
+            countSpan.textContent = newCount;
 
             const data = {
                 dealId,
