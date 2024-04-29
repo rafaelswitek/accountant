@@ -4,7 +4,8 @@
     </div>
     <div class="flex flex-grow px-10 mt-4 space-x-6 overflow-auto">
         @foreach ($stages as $stage)
-            <div class="flex flex-col flex-shrink-0 w-72 droppable">
+            <div class="flex flex-col flex-shrink-0 w-72 droppable" data-stage-id="{{ $stage->id }}"
+                data-stage-name="{{ $stage->name }}">
                 <div class="flex items-center flex-shrink-0 h-10 px-2">
                     <span class="block text-sm font-semibold">{{ $stage->name }}</span>
                     <span
@@ -20,7 +21,7 @@
                 <div class="flex flex-col pb-2 overflow-auto">
                     @foreach ($stage->deals as $deal)
                         <div class="draggable relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100"
-                            draggable="true">
+                            draggable="true" data-deal-id="{{ $deal->id }}" data-deal-name="{{ $deal->name }}">
                             <button
                                 class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex">
                                 <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -40,7 +41,8 @@
                                             d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    <span class="ml-1 leading-none">{{ $deal->created_at->format('d/m/Y H:i:s') }}</span>
+                                    <span
+                                        class="ml-1 leading-none">{{ $deal->created_at->format('d/m/Y H:i:s') }}</span>
                                 </div>
                                 <div class="relative flex items-center ml-4">
                                     <svg class="relative w-4 h-4 text-gray-300 fill-current"
@@ -114,9 +116,14 @@
 
     function drop() {
         if (draggedItem !== null) {
+            const dealId = draggedItem.dataset.dealId;
+            const dealName = draggedItem.dataset.dealName;
+            const stageId = this.dataset.stageId;
+            const stageName = this.dataset.stageName;
             this.appendChild(draggedItem);
             draggedItem = null;
             this.classList.remove("hovered");
+            showAlert(`${dealName} inserido no ${stageName}`)
         }
     }
 </script>
