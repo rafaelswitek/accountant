@@ -2,11 +2,12 @@
     <x-slot name="header">
         <div class="flex">
             <div class="flex me-2">
-                <select id="countries"
+                <select id="funnels"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option selected>Selecione o funil</option>
+                    <option value='' selected>Selecione o funil</option>
                     @foreach ($funnels as $funnel)
-                        <option value="{{ $funnel->id }}" {{ $funnelSelected->id == $funnel->id ? 'selected' : '' }}>{{ $funnel->name }}</option>
+                        <option value="{{ $funnel->id }}" {{ $funnelSelected->id == $funnel->id ? 'selected' : '' }}>
+                            {{ $funnel->name }}</option>
                     @endforeach
                 </select>
                 <button
@@ -78,3 +79,12 @@
 
     @include('pipeline.kanban')
 </x-app-layout>
+
+<script>
+    const funnels = document.getElementById('funnels')
+    funnels.addEventListener('change', function() {
+        if (this.value) {
+            location.href = `?id=${this.value}`
+        }
+    })
+</script>
