@@ -31,7 +31,7 @@
                                 </svg>
                             </button>
                             <span
-                                class="flex items-center h-6 px-3 text-xs font-semibold text-pink-500 bg-pink-100 rounded-full">Design</span>
+                                class="flex items-center h-6 px-3 text-xs font-semibold text-{{ App\Helpers\FromTo::colorStatusDeal($deal->status) }}-500 bg-{{ App\Helpers\FromTo::colorStatusDeal($deal->status) }}-100 rounded-full">{{ App\Helpers\FromTo::statusDeal($deal->status) }}</span>
                             <h4 class="mt-3 text-sm font-medium">{{ $deal->name }}</h4>
                             <div class="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
                                 <div class="flex items-center">
@@ -63,7 +63,7 @@
                                     <span class="ml-1 leading-none">1</span>
                                 </div> --}}
                                 <img class="w-6 h-6 ml-auto rounded-full"
-                                    src="{{ \App\Helpers\Faker::getImageUser() }}" />
+                                    src="https://randomuser.me/api/portraits/men/{{ $deal->user_id }}.jpg" />
                             </div>
                         </div>
                     @endforeach

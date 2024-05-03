@@ -19,5 +19,11 @@ class UserSeeder extends Seeder
             'email' => 'rafael.goncalves@emitte.com.br',
             'password' => 'ETuUDdDTWbaYcx4'
         ]);
+
+        User::create([
+            'name' => 'Lucas',
+            'email' => 'lucas.soares@emitte.com.br',
+            'password' => 'ETuUDdDTWbaYcx4'
+        ]);
     }
 }

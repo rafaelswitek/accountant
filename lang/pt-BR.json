@@ -147,5 +147,8 @@
   "Administrator users can perform any action.": "O administrador pode realizar qualquer ação.",
   "Editor users have the ability to read, create, and update.": "O editor pode ler, criar e atualizar",
   "Remove": "Remover",
-  "Companies": "Empresas"
+  "Companies": "Empresas",
+  "Opened": "Em Aberto",
+  "Won": "Ganho",
+  "Lost": "Perdido"
 }

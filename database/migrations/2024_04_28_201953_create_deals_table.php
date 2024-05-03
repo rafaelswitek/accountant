@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('deals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('stage_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
+            $table->enum('status', ['opened', 'won', 'lost'])->default('opened');
             $table->timestamps();
         });
     }
