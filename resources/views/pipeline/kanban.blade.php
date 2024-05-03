@@ -18,7 +18,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="flex flex-col pb-2 overflow-auto">
+                <div class="flex flex-col pb-2 overflow-auto drop-zone">
                     @foreach ($stage->deals as $deal)
                         <div class="draggable relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100"
                             draggable="true" data-deal-id="{{ $deal->id }}" data-deal-name="{{ $deal->name }}">
@@ -44,7 +44,7 @@
                                     <span
                                         class="ml-1 leading-none">{{ $deal->created_at->format('d/m/Y H:i:s') }}</span>
                                 </div>
-                                <div class="relative flex items-center ml-4">
+                                {{-- <div class="relative flex items-center ml-4">
                                     <svg class="relative w-4 h-4 text-gray-300 fill-current"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd"
@@ -61,9 +61,9 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                     <span class="ml-1 leading-none">1</span>
-                                </div>
+                                </div> --}}
                                 <img class="w-6 h-6 ml-auto rounded-full"
-                                    src='https://randomuser.me/api/portraits/women/26.jpg' />
+                                    src="{{ \App\Helpers\Faker::getImageUser() }}" />
                             </div>
                         </div>
                     @endforeach
@@ -131,7 +131,8 @@
             const dealName = draggedItem.dataset.dealName;
             const stageId = this.dataset.stageId;
             const stageName = this.dataset.stageName;
-            this.appendChild(draggedItem);
+            const destinationStage = this.querySelector('.drop-zone');
+            destinationStage.appendChild(draggedItem);
             draggedItem = null;
             this.classList.remove("hovered");
 

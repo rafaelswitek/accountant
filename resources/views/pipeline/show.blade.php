@@ -1,5 +1,37 @@
 <x-app-layout>
     <x-slot name="header">
+        <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
+            <form method="post" action="#" class="p-6">
+                @csrf
+
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    {{ __('Are you sure you want to delete your account?') }}
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                </p>
+
+                <div class="mt-6">
+                    <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+
+                    <x-text-input id="password" name="password" type="password" class="mt-1 block w-3/4"
+                        placeholder="{{ __('Password') }}" />
+
+                    <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+
+                    <x-danger-button class="ms-3">
+                        {{ __('Delete Account') }}
+                    </x-danger-button>
+                </div>
+            </form>
+        </x-modal>
         <div class="flex">
             <div class="flex me-2">
                 <select id="funnels"
@@ -22,24 +54,24 @@
                 </button>
             </div>
 
-            <button type="button"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <x-primary-button class="me-2" x-data=""
+                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M18 9V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h4M9 3v4a1 1 0 0 1-1 1H4m11 6v4m-2-2h4m3 0a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z" />
                 </svg>
                 Négocio
-            </button>
-            <button type="button"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            </x-primary-button>
+            <x-primary-button class="me-2" x-data=""
+                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M14 17h6m-3 3v-6M4.857 4h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857H4.857A.857.857 0 0 1 4 9.143V4.857C4 4.384 4.384 4 4.857 4Zm10 0h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857h-4.286A.857.857 0 0 1 14 9.143V4.857c0-.473.384-.857.857-.857Zm-10 10h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857H4.857A.857.857 0 0 1 4 19.143v-4.286c0-.473.384-.857.857-.857Z" />
                 </svg>
                 Funil
-            </button>
+            </x-primary-button>
 
             <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots"
                 class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
