@@ -3,12 +3,12 @@
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ $deal->name }}
-                <span x-data="{ show: {{ $deal->status == 'opened' }} }" x-show="show"
+                <span x-data="{ show: false }" x-show="show || '{{ $deal->status }}' === 'opened'"
                     class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">Em
                     Aberto</span>
-                <span x-data="{ show: {{ $deal->status == 'won' }} }" x-show="show"
+                <span x-data="{ show: false }" x-show="show || '{{ $deal->status }}' === 'won'"
                     class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Ganho</span>
-                <span x-data="{ show: {{ $deal->status == 'lost' }} }" x-show="show"
+                <span x-data="{ show: false }" x-show="show || '{{ $deal->status }}' === 'lost'"
                     class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Perdido</span>
             </h2>
             <div>

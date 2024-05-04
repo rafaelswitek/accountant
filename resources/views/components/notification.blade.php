@@ -6,7 +6,7 @@
 <script>
     let timeoutId;
 
-    function showAlert(message, type = 'green') {
+    function showAlert(message, type = 'blue') {
         document.getElementById('alertText').innerText = message;
         const alert = document.getElementById('alert');
         alert.classList.remove('hidden');
