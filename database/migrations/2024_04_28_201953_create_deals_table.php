@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('stage_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->enum('status', ['opened', 'won', 'lost'])->default('opened');
             $table->timestamps();

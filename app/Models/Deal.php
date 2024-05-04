@@ -12,4 +12,9 @@ class Deal extends Model
     {
         return $this->belongsTo(Stage::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

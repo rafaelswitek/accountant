@@ -26,14 +26,14 @@
                 <div class="mb-5">
                     <label for="dealName"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Name') }}</label>
-                    <input type="text" name="dealName"
+                    <input type="text" id="dealName" name="dealName"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         required value="{{ $deal->name }}" />
                 </div>
                 <div class="mb-5">
                     <label for="stageId"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Funnel') }}</label>
-                    <select name="stageId"
+                    <select id="stageId" name="stageId"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         required>
                         @foreach ($funnels as $funnelStages)
@@ -68,8 +68,19 @@
         </button>
     </h2>
     <div id="accordion-open-body-2" class="hidden bg-white dark:bg-white" aria-labelledby="accordion-open-heading-2">
-        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-white">
-            teste 2
+        <div
+            class="flex justify-start flex-wrap p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-white">
+            @foreach ($deal->company->toArray() as $key => $company)
+                <x-input-clipboard label="{{ $key }}" text="{{ $company }}" />
+            @endforeach
+
+            @foreach ($customFields as $cField)
+                <x-input-clipboard label="custom_{{ $cField->id }}"
+                    text="{{ $cField->values->info->value ?? null }}" />
+            @endforeach
+
+            <a href="/company/{{ $deal->company->id }}"
+                class="mt-2 ml-2 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Editar</a>
         </div>
     </div>
 </div>
