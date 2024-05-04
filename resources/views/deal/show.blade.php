@@ -45,5 +45,14 @@
         </div>
     </x-slot>
 
-    {{-- @include('deal.partials.table') --}}
+    @include('deal.partials.stepper')
+
+    <div class="grid grid-cols-2">
+        <div class="col">
+            @include('deal.partials.contact')
+        </div>
+        <div class="col">
+            @include('deal.partials.timeline')
+        </div>
+    </div>
 </x-app-layout>

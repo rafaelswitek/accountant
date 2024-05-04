@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline');
     Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
 
-    Route::get('/deal/{id}', [DealController::class, 'show'])->name('deal');
+    Route::get('/deal/{id}', [DealController::class, 'show'])->name('pipeline.deal');
 });
 
 require __DIR__ . '/auth.php';
