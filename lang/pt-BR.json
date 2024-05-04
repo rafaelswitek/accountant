@@ -152,5 +152,7 @@
   "Won": "Ganho",
   "Lost": "Perdido",
   "Deal": "Negócio",
-  "Funnel": "Funil"
+  "Funnel": "Funil",
+  "Are you sure you want to delete the deal?": "Tem certeza de que deseja excluir o negocio?",
+  "Once the deal is deleted, all of its logs and data will be permanently deleted.": "Assim que a transação for excluída, todos os seus registros e dados serão excluídos permanentemente."
 }

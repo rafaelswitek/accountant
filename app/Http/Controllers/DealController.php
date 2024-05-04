@@ -29,4 +29,12 @@ class DealController extends Controller
 
         return Redirect::route('pipeline.deal', compact('id'))->with('status', 'deal-updated');
     }
+
+    public function destroy(int $id)
+    {
+        $deal = Deal::find($id);
+        $deal->delete();
+
+        return Redirect::route('pipeline');
+    }
 }

@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/deal/{id}', [DealController::class, 'show'])->name('pipeline.deal');
     Route::put('/deal/{id}', [DealController::class, 'update'])->name('deal.update');
+    Route::delete('/deal/{id}', [DealController::class, 'destroy'])->name('deal.destroy');
 });
 
 require __DIR__ . '/auth.php';
