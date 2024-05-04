@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DealController;
 use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline');
     Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
+
+    Route::get('/deal/{id}', [DealController::class, 'show'])->name('deal');
 });
 
 require __DIR__ . '/auth.php';

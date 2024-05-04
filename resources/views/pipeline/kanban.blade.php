@@ -20,7 +20,7 @@
                 </div>
                 <div class="flex flex-col pb-2 overflow-auto drop-zone">
                     @foreach ($stage->deals as $deal)
-                        <div class="draggable relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100"
+                        <a href="/deal/{{$deal->id}}" class="draggable relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100"
                             draggable="true" data-deal-id="{{ $deal->id }}" data-deal-name="{{ $deal->name }}">
                             <button
                                 class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex">
@@ -65,7 +65,7 @@
                                 <img class="w-6 h-6 ml-auto rounded-full"
                                     src="https://randomuser.me/api/portraits/men/{{ $deal->user_id }}.jpg" />
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
