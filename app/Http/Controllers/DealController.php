@@ -27,7 +27,7 @@ class DealController extends Controller
         $deal->status = $data['dealStatus'] ?? $deal->status;
         $deal->save();
 
-        return Redirect::route('pipeline.deal', compact('id'))->with('status', 'deal-updated');
+        return Redirect::route('pipeline.deal', compact('id'))->with('status', 'deal-updated')->with('message', __('Saved.'));
     }
 
     public function destroy(int $id)
