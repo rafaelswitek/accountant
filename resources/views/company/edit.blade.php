@@ -8,7 +8,7 @@
         <section class="bg-white dark:bg-gray-900">
             <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Dados da empresa</h2>
-                <form method="post" action="{{ route('company.update', ['id' => $company->id]) }}">
+                <form method="POST" action="{{ route('company.update', ['id' => $company->id]) }}">
                     @csrf
                     @method('PUT')
                     <div class="grid gap-4 sm:grid-cols-3 sm:gap-6">

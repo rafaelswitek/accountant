@@ -54,9 +54,7 @@ class CompanyController extends Controller
 
         $this->updateCustomFields($id, $data);
 
-        $customFields = $this->getCustomFields($id);
-
-        return Redirect::route('company.edit', compact('id', 'company', 'customFields'))->with('status', 'company-updated');
+        return Redirect::route('company.edit', compact('id'))->with('status', 'company-updated');
     }
 
     private function getCustomFields(int $companyId): Collection

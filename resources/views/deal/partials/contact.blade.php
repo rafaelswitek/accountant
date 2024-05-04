@@ -9,7 +9,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M8 7H5a2 2 0 0 0-2 2v4m5-6h8M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m0 0h3a2 2 0 0 1 2 2v4m0 0v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6m18 0s-4 2-9 2-9-2-9-2m9-2h.01" />
                 </svg>
-                Négocio
+                Negócio
             </span>
             <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -20,7 +20,38 @@
     </h2>
     <div id="accordion-open-body-1" class="hidden bg-white dark:bg-white" aria-labelledby="accordion-open-heading-1">
         <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-white">
-            teste 1
+            <form class="max-w-sm mx-auto" method="POST" action="{{ route('deal.update', ['id' => $deal->id]) }}">
+                @csrf
+                @method('PUT')
+                <div class="mb-5">
+                    <label for="dealName"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Name') }}</label>
+                    <input type="text" name="dealName"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required value="{{ $deal->name }}" />
+                </div>
+                <div class="mb-5">
+                    <label for="stageId"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Funnel') }}</label>
+                    <select name="stageId"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required>
+                        @foreach ($funnels as $funnelStages)
+                            <option value="{{ $funnelStages->id }}"
+                                {{ $funnelStages->id == $deal->stage_id ? 'selected' : '' }}>
+                                {{ $funnelStages->funnel->name }} - {{ $funnelStages->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex items-center gap-4">
+                    <x-primary-button>{{ __('Save') }}</x-primary-button>
+
+                    @if (session('status') === 'deal-updated')
+                        <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                            class="text-sm text-gray-600 dark:text-gray-400">{{ __('Saved.') }}</p>
+                    @endif
+                </div>
+            </form>
         </div>
     </div>
     <div class="border-t border-gray-300 my-4"></div>
