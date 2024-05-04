@@ -13,7 +13,7 @@ class DealController extends Controller
 {
     public function show(int $id)
     {
-        $deal = Deal::with('stage', 'company')->find($id);
+        $deal = Deal::with(['stage', 'company:id,document,name,trade,phone,email'])->find($id);
         $stages = Stage::where('funnel_id', $deal->stage->funnel_id)->get();
         $funnels = Stage::with('funnel')->orderBy('funnel_id')->get();
         $customFields = $this->getCustomFields($deal->company_id);
