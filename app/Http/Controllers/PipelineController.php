@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Deal;
 use App\Models\Funnel;
 use App\Models\Stage;
@@ -15,7 +16,9 @@ class PipelineController extends Controller
         $funnels = Funnel::all();
         $funnelSelected = Funnel::find($funnelId);
         $stages = Stage::with('deals')->where('funnel_id', $funnelId)->get();
-        return view('pipeline.show', compact('funnels', 'stages', 'funnelSelected'));
+        $companies = Company::limit(10)->get();
+        $stageFunnels = Stage::with('funnel')->orderBy('funnel_id')->get();
+        return view('pipeline.show', compact('funnels', 'stages', 'funnelSelected', 'companies', 'stageFunnels'));
     }
 
     public function updateDeal(Request $request)

@@ -20,6 +20,20 @@ class DealController extends Controller
         return view('deal.show', compact('deal', 'stages', 'funnels', 'customFields'));
     }
 
+    public function create(Request $request)
+    {
+        $data = $request->all();
+
+        Deal::create([
+            'stage_id' => $data['dealStageId'],
+            'user_id' => auth()->user()->id,
+            'company_id' => $data['dealCompanyId'],
+            'name' => $data['dealName'],
+        ]);
+
+        return Redirect::route('pipeline');
+    }
+
     public function update(Request $request, int $id)
     {
         $data = $request->all();

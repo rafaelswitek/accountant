@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deal extends Model
 {
-    protected $fillable = ['name', 'stage_id'];
+    protected $fillable = ['name', 'stage_id', 'user_id', 'company_id'];
 
     public function stage()
     {

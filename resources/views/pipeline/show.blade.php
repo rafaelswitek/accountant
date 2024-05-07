@@ -1,24 +1,40 @@
 <x-app-layout>
     <x-slot name="header">
         <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-            <form method="post" action="#" class="p-6">
+            <form method="post" action="{{ route('deal.create') }}" class="p-6">
                 @csrf
 
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    {{ __('Are you sure you want to delete your account?') }}
-                </h2>
+                <div class="mt-6">
+                    <x-input-label for="dealName" value="{{ __('Name') }}" />
 
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-                </p>
+                    <x-text-input id="dealName" name="dealName" type="text" class="mt-1 block w-3/4"
+                        placeholder="{{ __('Name') }}" required />
+                </div>
 
                 <div class="mt-6">
-                    <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                    <x-input-label for="dealCompanyId" value="{{ __('Company') }}" />
 
-                    <x-text-input id="password" name="password" type="password" class="mt-1 block w-3/4"
-                        placeholder="{{ __('Password') }}" />
+                    <select id="dealCompanyId" name="dealCompanyId"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required>
+                        @foreach ($companies as $company)
+                            <option value="{{ $company->id }}">
+                                {{ $company->document }} - {{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                    <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                <div class="mt-6">
+                    <x-input-label for="dealStageId" value="{{ __('Funnel') }}" />
+
+                    <select id="dealStageId" name="dealStageId"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required>
+                        @foreach ($stageFunnels as $funnelStages)
+                            <option value="{{ $funnelStages->id }}">
+                                {{ $funnelStages->funnel->name }} - {{ $funnelStages->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="mt-6 flex justify-end">
@@ -26,9 +42,9 @@
                         {{ __('Cancel') }}
                     </x-secondary-button>
 
-                    <x-danger-button class="ms-3">
-                        {{ __('Delete Account') }}
-                    </x-danger-button>
+                    <x-primary-button class="ms-3">
+                        {{ __('Create') }}
+                    </x-primary-button>
                 </div>
             </form>
         </x-modal>

@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline');
     Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
 
+    Route::post('/deal', [DealController::class, 'create'])->name('deal.create');
     Route::get('/deal/{id}', [DealController::class, 'show'])->name('pipeline.deal');
     Route::put('/deal/{id}', [DealController::class, 'update'])->name('deal.update');
     Route::delete('/deal/{id}', [DealController::class, 'destroy'])->name('deal.destroy');
