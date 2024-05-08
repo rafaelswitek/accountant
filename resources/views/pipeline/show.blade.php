@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
+        <x-modal name="new-deal" focusable>
             <form method="post" action="{{ route('deal.create') }}" class="p-6">
                 @csrf
 
@@ -9,7 +9,7 @@
 
                     <input type="text" id="dealName" name="dealName" data-dropdown-toggle="dropdownSearch"
                         data-dropdown-placement="bottom"
-                        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="{{ __('Deal') }}" required>
                 </div>
 
@@ -29,32 +29,36 @@
                             class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Buscar empresa" required>
                     </div>
-                </div>
-                <div id="dropdownSearch" class="hidden z-20 bg-white rounded-lg shadow dark:bg-gray-700 w-full">
-                    <ul class="px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="dropdownSearchButton">
-                        @foreach ($companies as $company)
-                            <li>
-                                <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="{{ $company->id }}" name="dealCompanyId" type="radio" value=""
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                        required>
-                                    <label for="{{ $company->id }}"
-                                        class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{{ $company->document }}
-                                        - {{ $company->name }}</label>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <a href="#"
-                        class="flex items-center p-3 text-sm font-medium text-blue-600 border-t border-gray-200 rounded-b-lg bg-gray-50 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-blue-500 hover:underline">
-                        <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 20 18">
-                            <path
-                                d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-6a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2Z" />
-                        </svg>
-                        Cadastrar Empresa
-                    </a>
+                    <div id="dropdownSearch"
+                        class="hidden h-50 z-20 bg-white rounded-lg shadow dark:bg-gray-700 w-full">
+                        <ul class="h-20 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdownSearchButton">
+                            @foreach ($companies as $company)
+                                <li>
+                                    <div
+                                        class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="{{ $company->document }} - {{ $company->name }}" name="dealCompanyId"
+                                            type="radio" value="{{ $company->id }}"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 dealCompanyFields"
+                                            required>
+                                        <label for="{{ $company->document }} - {{ $company->name }}"
+                                            class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{{ $company->document }}
+                                            - {{ $company->name }}</label>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <a href="#"
+                            class="flex items-center p-3 text-sm font-medium text-blue-600 border-t border-gray-200 rounded-b-lg bg-gray-50 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-blue-500 hover:underline">
+                            <svg class="w-[25px] h-[25px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Cadastrar Empresa
+                        </a>
+                    </div>
                 </div>
 
                 <div class="mt-6">
@@ -105,7 +109,7 @@
             </div>
 
             <x-primary-button class="me-2" x-data=""
-                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
+                x-on:click.prevent="$dispatch('open-modal', 'new-deal')">
                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -114,7 +118,7 @@
                 Negócio
             </x-primary-button>
             <x-primary-button class="me-2" x-data=""
-                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
+                x-on:click.prevent="$dispatch('open-modal', 'new-funnel')">
                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                     viewBox="0 0 24 24">
@@ -171,4 +175,26 @@
             location.href = `?id=${this.value}`
         }
     })
+
+    const dropdownSearchButton = document.getElementById('dropdownSearchButton')
+    let timerId;
+    dropdownSearchButton.addEventListener('keyup', function(e) {
+        clearTimeout(timerId);
+
+        timerId = setTimeout(function() {
+            console.log(e.target.value);
+        }, 1000);
+    })
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const dealCompanyFields = document.querySelectorAll('.dealCompanyFields');
+
+        dealCompanyFields.forEach(function(element) {
+            element.addEventListener('click', function(e) {
+                const companyId = e.target.getAttribute('id');
+                dropdownSearchButton.placeholder = e.target.id
+                dropdownSearchButton.click()
+            });
+        });
+    });
 </script>
