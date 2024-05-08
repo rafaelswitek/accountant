@@ -24,7 +24,7 @@
                                     stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="text" id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch"
+                        <input type="text" id="dealCompanyId" data-dropdown-toggle="dropdownSearch"
                             data-dropdown-placement="bottom"
                             class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Buscar empresa" required>
@@ -32,7 +32,7 @@
                     <div id="dropdownSearch"
                         class="hidden h-50 z-20 bg-white rounded-lg shadow dark:bg-gray-700 w-full">
                         <ul class="h-20 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownSearchButton">
+                            aria-labelledby="dealCompanyId">
                             @foreach ($companies as $company)
                                 <li>
                                     <div
@@ -176,9 +176,12 @@
         }
     })
 
-    const dropdownSearchButton = document.getElementById('dropdownSearchButton')
+    const dealCompanyId = document.getElementById('dealCompanyId')
     let timerId;
-    dropdownSearchButton.addEventListener('keyup', function(e) {
+    dealCompanyId.addEventListener('focus', function() {
+        this.click()
+    })
+    dealCompanyId.addEventListener('keyup', function(e) {
         clearTimeout(timerId);
 
         timerId = setTimeout(function() {
@@ -192,8 +195,8 @@
         dealCompanyFields.forEach(function(element) {
             element.addEventListener('click', function(e) {
                 const companyId = e.target.getAttribute('id');
-                dropdownSearchButton.placeholder = e.target.id
-                dropdownSearchButton.click()
+                dealCompanyId.value = e.target.id
+                dealCompanyId.click()
             });
         });
     });
