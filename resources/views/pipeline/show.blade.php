@@ -187,7 +187,6 @@
         clearTimeout(timerId);
 
         timerId = setTimeout(function() {
-            console.log(e.target.value);
             fetch(`/company/search?param=${e.target.value}`)
                 .then(response => {
                     if (!response.ok) {
@@ -196,7 +195,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
                     companiesDiv.textContent = ''
                     data.forEach(element => {
                         companiesDiv.innerHTML += `
@@ -212,6 +210,8 @@
                             </li>
                         `;
                     });
+
+                    attachEventsToDealCompanyFields();
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
@@ -220,6 +220,10 @@
     })
 
     document.addEventListener('DOMContentLoaded', function() {
+        attachEventsToDealCompanyFields();
+    });
+
+    function attachEventsToDealCompanyFields() {
         const dealCompanyFields = document.querySelectorAll('.dealCompanyFields');
 
         dealCompanyFields.forEach(function(element) {
@@ -229,5 +233,5 @@
                 dealCompanyId.click()
             });
         });
-    });
+    }
 </script>
