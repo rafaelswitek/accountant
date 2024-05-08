@@ -31,7 +31,8 @@
                     </div>
                     <div id="dropdownSearch"
                         class="hidden h-50 z-20 bg-white rounded-lg shadow dark:bg-gray-700 w-full">
-                        <ul class="h-20 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                        <ul id="companiesDiv"
+                            class="h-20 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
                             aria-labelledby="dealCompanyId">
                             @foreach ($companies as $company)
                                 <li>
@@ -177,6 +178,7 @@
     })
 
     const dealCompanyId = document.getElementById('dealCompanyId')
+    const companiesDiv = document.getElementById('companiesDiv')
     let timerId;
     dealCompanyId.addEventListener('focus', function() {
         this.click()
@@ -186,7 +188,35 @@
 
         timerId = setTimeout(function() {
             console.log(e.target.value);
-        }, 1000);
+            fetch(`/company/search?param=${e.target.value}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    companiesDiv.textContent = ''
+                    data.forEach(element => {
+                        companiesDiv.innerHTML += `
+                            <li>
+                                <div class="flex items-center ps-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input id="${element.document}-${element.name}" name="dealCompanyId"
+                                        type="radio" value="${element.id}"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500 dealCompanyFields"
+                                        required>
+                                    <label for="${element.document}-${element.name}"
+                                        class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">${element.document} - ${element.name}</label>
+                                </div>
+                            </li>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }, 600);
     })
 
     document.addEventListener('DOMContentLoaded', function() {

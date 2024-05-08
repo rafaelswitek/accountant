@@ -29,6 +29,15 @@ class Company extends Model
         'status' => 'boolean'
     ];
 
+    public function scopeSearch($query, $param)
+    {
+        return $query->where(function ($query) use ($param) {
+            $query->where('document', 'like', "%{$param }%")
+                ->orWhere('name', 'like', "%{$param }%")
+                ->orWhere('trade', 'like', "%{$param    }%");
+        });
+    }
+
     public function customFields(): HasMany
     {
         return $this->hasMany(CustomFieldValue::class);

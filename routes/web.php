@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/company', [CompanyController::class, 'index'])->name('company');
     Route::get('/company/list', [CompanyController::class, 'get']);
+    Route::get('/company/search', [CompanyController::class, 'search'])->name('company.search');
     Route::get('/company/{id}', [CompanyController::class, 'edit'])->name('company.edit');
     Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
 

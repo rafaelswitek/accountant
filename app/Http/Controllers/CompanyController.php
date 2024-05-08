@@ -36,6 +36,20 @@ class CompanyController extends Controller
             ->paginate(10);
     }
 
+    public function search(Request $request): array
+    {
+        $param = explode(' - ', $request->param);
+        return Company::select('id', 'document', 'name')
+        ->when($param[0], function ($query) use ($param) {
+            return $query->search($param[0]);
+        })
+            ->when(isset($param[1]), function ($query) use ($param) {
+                return $query->search($param[1]);
+            })
+            ->get()
+            ->toArray();
+    }
+
     public function edit(int $id): View
     {
         $company = Company::find($id);
