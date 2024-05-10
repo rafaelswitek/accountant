@@ -5,25 +5,24 @@
                 @csrf
 
                 <div class="mt-6">
-                    <x-input-label for="companyDocument" value="{{ __('CNPJ/CPF') }}" />
+                    <x-input-label for="companyTrade" value="{{ __('Nome Fantasia') }}" />
+
+                    <input type="text" id="companyTrade" name="companyTrade"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required>
+                </div>
+
+                <div class="mt-6">
+                    <x-input-label for="companyDocument" value="{{ __('CNPJ') }}" />
 
                     <input type="text" id="companyDocument" name="companyDocument"
-                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="{{ __('000.000.000/0000-00') }}">
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
 
                 <div class="mt-6">
                     <x-input-label for="companyName" value="{{ __('Razão Social') }}" />
 
                     <input type="text" id="companyName" name="companyName"
-                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required>
-                </div>
-
-                <div class="mt-6">
-                    <x-input-label for="companyTrade" value="{{ __('Nome Fantasia') }}" />
-
-                    <input type="text" id="companyTrade" name="companyTrade"
                         class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
 
