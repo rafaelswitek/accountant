@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('/company', [CompanyController::class, 'create'])->name('company.create');
     Route::get('/company', [CompanyController::class, 'index'])->name('company');
     Route::get('/company/list', [CompanyController::class, 'get']);
     Route::get('/company/search', [CompanyController::class, 'search'])->name('company.search');

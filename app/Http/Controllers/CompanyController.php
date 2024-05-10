@@ -20,6 +20,20 @@ class CompanyController extends Controller
         return view('company.index');
     }
 
+    public function create(Request $request)
+    {
+        Company::create([
+            'document' => $request->get('companyDocument'),
+            'name' => $request->get('companyName'),
+            'trade' => $request->get('companyTrade'),
+            'phone' => $request->get('companyPhone'),
+            'email' => $request->get('companyEmail'),
+            'origin' => 'Manual',
+        ]);
+
+        return Redirect::route('company');
+    }
+
     public function get(Request $request): LengthAwarePaginator
     {
         $param = $request->param ?? null;
@@ -40,9 +54,9 @@ class CompanyController extends Controller
     {
         $param = explode(' - ', $request->param);
         return Company::select('id', 'document', 'name')
-        ->when($param[0], function ($query) use ($param) {
-            return $query->search($param[0]);
-        })
+            ->when($param[0], function ($query) use ($param) {
+                return $query->search($param[0]);
+            })
             ->when(isset($param[1]), function ($query) use ($param) {
                 return $query->search($param[1]);
             })

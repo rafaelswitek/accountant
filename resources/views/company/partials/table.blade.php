@@ -243,7 +243,7 @@
                     <span class="font-medium text-gray-600 dark:text-gray-300">${extractInitial(data.trade ?? data.name)}</span>
                 </div>
                 <div class="ps-3">
-                    <div class="text-base font-semibold">${data.trade}</div>
+                    ${data.trade ? `<div class="text-base font-semibold">${data.trade}</div>` : ''}
                     <div class="font-medium text-gray-500">${maskCNPJ(data.document)}</div>
                     <div class="font-normal text-gray-500">${data.name}</div>
                 </div>

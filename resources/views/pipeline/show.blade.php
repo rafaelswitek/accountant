@@ -1,5 +1,57 @@
 <x-app-layout>
     <x-slot name="header">
+        <x-modal name="new-company" focusable>
+            <form id="formNewCompany" method="post" action="{{ route('company.create') }}" class="p-6">
+                @csrf
+
+                <div class="mt-6">
+                    <x-input-label for="companyDocument" value="{{ __('CNPJ/CPF') }}" />
+
+                    <input type="text" id="companyDocument" name="companyDocument"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="{{ __('000.000.000/0000-00') }}">
+                </div>
+
+                <div class="mt-6">
+                    <x-input-label for="companyName" value="{{ __('Razão Social') }}" />
+
+                    <input type="text" id="companyName" name="companyName"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required>
+                </div>
+
+                <div class="mt-6">
+                    <x-input-label for="companyTrade" value="{{ __('Nome Fantasia') }}" />
+
+                    <input type="text" id="companyTrade" name="companyTrade"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+
+                <div class="mt-6">
+                    <x-input-label for="companyPhone" value="{{ __('Phone') }}" />
+
+                    <input type="text" id="companyPhone" name="companyPhone"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+
+                <div class="mt-6">
+                    <x-input-label for="companyEmail" value="{{ __('Email') }}" />
+
+                    <input type="email" id="companyEmail" name="companyEmail"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+
+                    <x-primary-button class="ms-3">
+                        {{ __('Create') }}
+                    </x-primary-button>
+                </div>
+            </form>
+        </x-modal>
         <x-modal name="new-deal" focusable>
             <form id="formNewDeal" method="post" action="{{ route('deal.create') }}" class="p-6">
                 @csrf
@@ -40,7 +92,8 @@
                                 ])
                             @endforeach
                         </ul>
-                        <a href="#"
+                        <a href="#" x-on:click="$dispatch('close')"
+                            x-on:click.prevent="$dispatch('open-modal', 'new-company')"
                             class="flex items-center p-3 text-sm font-medium text-blue-600 border-t border-gray-200 rounded-b-lg bg-gray-50 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-blue-500 hover:underline">
                             <svg class="w-[25px] h-[25px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -103,7 +156,8 @@
             <x-primary-button class="me-2" x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'new-deal')">
                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                    viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M18 9V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h4M9 3v4a1 1 0 0 1-1 1H4m11 6v4m-2-2h4m3 0a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z" />
                 </svg>

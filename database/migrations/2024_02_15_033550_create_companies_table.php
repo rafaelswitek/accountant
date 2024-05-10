@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('trade')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->boolean('status')->nullable();
+            $table->boolean('status')->default(true);
             $table->json('keys')->nullable();
             $table->string('origin')->nullable();
             $table->text('photo')->nullable();
