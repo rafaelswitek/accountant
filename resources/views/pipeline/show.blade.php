@@ -7,8 +7,7 @@
                 <div class="mt-6">
                     <x-input-label for="dealName" value="{{ __('Name') }}" />
 
-                    <input type="text" id="dealName" name="dealName" data-dropdown-toggle="dropdownSearch"
-                        data-dropdown-placement="bottom"
+                    <input type="text" id="dealName" name="dealName"
                         class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="{{ __('Deal') }}" required>
                 </div>
@@ -24,8 +23,7 @@
                                     stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="text" id="dealCompanyId" data-dropdown-toggle="dropdownSearch"
-                            data-dropdown-placement="bottom"
+                        <input type="text" id="dealCompanyId"
                             class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Buscar empresa" required>
                     </div>
@@ -114,8 +112,7 @@
             <x-primary-button class="me-2" x-data=""
                 x-on:click.prevent="$dispatch('open-modal', 'new-funnel')">
                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                    viewBox="0 0 24 24">
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M14 17h6m-3 3v-6M4.857 4h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857H4.857A.857.857 0 0 1 4 9.143V4.857C4 4.384 4.384 4 4.857 4Zm10 0h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857h-4.286A.857.857 0 0 1 14 9.143V4.857c0-.473.384-.857.857-.857Zm-10 10h4.286c.473 0 .857.384.857.857v4.286a.857.857 0 0 1-.857.857H4.857A.857.857 0 0 1 4 19.143v-4.286c0-.473.384-.857.857-.857Z" />
                 </svg>
@@ -172,7 +169,12 @@
 
     const dealCompanyId = document.getElementById('dealCompanyId')
     const companiesDiv = document.getElementById('companiesDiv')
+    const dropdownSearch = document.getElementById('dropdownSearch');
     let timerId;
+
+    dealCompanyId.addEventListener('focus', function() {
+        dropdownSearch.classList.remove('hidden');
+    })
 
     dealCompanyId.addEventListener('keyup', function(e) {
         clearTimeout(timerId);
@@ -215,7 +217,7 @@
             element.addEventListener('click', function(e) {
                 const companyId = e.target.getAttribute('id');
                 dealCompanyId.value = e.target.id
-                dealCompanyId.click()
+                dropdownSearch.classList.add('hidden');
             });
         });
     }
