@@ -24,6 +24,8 @@ class DealController extends Controller
     {
         $data = $request->all();
 
+        $stage = Stage::find($data['dealStageId']);
+
         Deal::create([
             'stage_id' => $data['dealStageId'],
             'user_id' => auth()->user()->id,
@@ -31,7 +33,7 @@ class DealController extends Controller
             'name' => $data['dealName'],
         ]);
 
-        return Redirect::route('pipeline');
+        return Redirect::route('pipeline', ['id' => $stage->funnel_id]);
     }
 
     public function update(Request $request, int $id)
