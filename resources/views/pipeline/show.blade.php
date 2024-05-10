@@ -173,9 +173,7 @@
     const dealCompanyId = document.getElementById('dealCompanyId')
     const companiesDiv = document.getElementById('companiesDiv')
     let timerId;
-    dealCompanyId.addEventListener('focus', function() {
-        this.click()
-    })
+
     dealCompanyId.addEventListener('keyup', function(e) {
         clearTimeout(timerId);
 
@@ -203,7 +201,7 @@
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
                 });
-        }, 600);
+        }, 100);
     })
 
     document.addEventListener('DOMContentLoaded', function() {
