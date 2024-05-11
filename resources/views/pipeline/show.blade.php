@@ -174,7 +174,7 @@
             </x-primary-button>
 
             <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots"
-                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 {{ !empty($status) ? 'bg-gray-100' : 'bg-white' }} rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                 type="button">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -188,22 +188,22 @@
                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
                     <li>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Em
+                        <a onclick="updateUrl('opened')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white {{ $status == 'opened' ? 'bg-gray-100' : '' }}">Em
                             aberto</a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ganhos</a>
+                        <a onclick="updateUrl('won')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white {{ $status == 'won' ? 'bg-gray-100' : '' }}">Ganhos</a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perdidos</a>
+                        <a onclick="updateUrl('lost')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white {{ $status == 'lost' ? 'bg-gray-100' : '' }}">Perdidos</a>
                     </li>
                 </ul>
                 <div class="py-2">
-                    <a href="#"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Todos</a>
+                    <a onclick="updateUrl('all')"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white {{ empty($status) ? 'bg-gray-100' : '' }}">Todos</a>
                 </div>
             </div>
         </div>
@@ -289,5 +289,23 @@
         const radioButtons = document.getElementsByName('dealCompanyId');
 
         return Array.from(radioButtons).some(button => button.checked);
+    }
+
+    function updateUrl(oldStatus) {
+        const params = new URLSearchParams(location.search);
+        const id = params.get("id");
+        const status = params.get("status");
+
+        if (status !== oldStatus) {
+            params.delete("status");
+            if (oldStatus) {
+                params.append("status", oldStatus);
+            }
+
+            const queryString = params.toString();
+            const newUrl = `${location.pathname}?${queryString}`;
+
+            window.location.href = newUrl;
+        }
     }
 </script>
