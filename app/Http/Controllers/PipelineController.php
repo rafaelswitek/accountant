@@ -60,7 +60,7 @@ class PipelineController extends Controller
 
                 $funnel->stages()->createMany($stages->toArray());
 
-                return redirect()->route('pipeline', ['id' => $funnel->id]);
+                return redirect()->route('pipeline.index', ['id' => $funnel->id]);
             });
         } catch (Exception $e) {
             return back()->with('error', 'An error occurred while saving the funnel: ' . $e->getMessage());
@@ -73,7 +73,7 @@ class PipelineController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'stages' => 'required|array',
-                'stages.*' => 'string|distinct',
+                'stages.*' => 'string|required|distinct',
             ]);
 
             $funnel = Funnel::find($id);
@@ -97,11 +97,10 @@ class PipelineController extends Controller
 
                 Stage::destroy($existingStages);
 
-                return redirect()->route('pipeline.index')->with('success', 'Funnel updated successfully.');
+                return redirect()->route('pipeline.index', ['id' => $funnel->id])->with('success', 'Funnel updated successfully.');
             });
         } catch (Exception $e) {
-            dd($e);
-            return back()->with('error', 'An error occurred while updating the funnel: ' . $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
     }
 
