@@ -7,6 +7,7 @@ use App\Models\Deal;
 use App\Models\Funnel;
 use App\Models\Stage;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -64,6 +65,52 @@ class PipelineController extends Controller
         } catch (Exception $e) {
             return back()->with('error', 'An error occurred while saving the funnel: ' . $e->getMessage());
         }
+    }
+
+    public function update(Request $request, int $id)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'stages' => 'required|array',
+                'stages.*' => 'string|distinct',
+            ]);
+
+            $funnel = Funnel::find($id);
+
+            return DB::transaction(function () use ($request, $funnel) {
+                $funnel->update($request->only('name'));
+
+                $existingStages = $funnel->stages()->pluck('id')->toArray();
+
+                foreach ($request->input('stages') as $order => $stage) {
+                    $stageModel = Stage::updateOrCreate(
+                        ['funnel_id' => $funnel->id, 'order' => $order],
+                        ['name' => $stage]
+                    );
+
+                    $key = array_search($stageModel->id, $existingStages);
+                    if ($key !== false) {
+                        unset($existingStages[$key]);
+                    }
+                }
+
+                Stage::destroy($existingStages);
+
+                return redirect()->route('pipeline.index')->with('success', 'Funnel updated successfully.');
+            });
+        } catch (Exception $e) {
+            dd($e);
+            return back()->with('error', 'An error occurred while updating the funnel: ' . $e->getMessage());
+        }
+    }
+
+    public function edit(int $id): View
+    {
+        $funnel = Funnel::find($id);
+        $stages = Stage::where('funnel_id', $id)->get();
+
+        return view('pipeline.store', compact('funnel', 'stages'));
     }
 
     public function updateDeal(Request $request)

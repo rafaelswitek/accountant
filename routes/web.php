@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline.index');
     Route::get('/pipeline/create', [PipelineController::class, 'create'])->name('pipeline.create');
     Route::post('/pipeline', [PipelineController::class, 'store'])->name('pipeline.store');
+    Route::get('/pipeline/{id}/edit', [PipelineController::class, 'edit'])->name('pipeline.edit');
+    Route::put('/pipeline/{id}', [PipelineController::class, 'update'])->name('pipeline.update');
     Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
 
     Route::post('/deal', [DealController::class, 'create'])->name('deal.create');

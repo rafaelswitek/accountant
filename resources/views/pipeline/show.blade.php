@@ -140,7 +140,7 @@
                             {{ $funnel->name }}</option>
                     @endforeach
                 </select>
-                <button
+                <button id="editFunnel"
                     class="border border-gray-300 inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-r-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     type="button">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -223,6 +223,12 @@
     const dealCompanyId = document.getElementById('dealCompanyId')
     const companiesDiv = document.getElementById('companiesDiv')
     const dropdownSearch = document.getElementById('dropdownSearch');
+    const editFunnel = document.getElementById('editFunnel');
+
+    editFunnel.addEventListener('click', function() {
+        location.href = `pipeline/${funnels.value}/edit`
+    })
+    
     let timerId;
 
     dealCompanyId.addEventListener('focus', function() {
