@@ -39,7 +39,7 @@ class PipelineController extends Controller
 
     public function create()
     {
-        return view('pipeline.store');
+        return view('pipeline.create');
     }
 
     public function store(Request $request)
@@ -109,7 +109,7 @@ class PipelineController extends Controller
         $funnel = Funnel::find($id);
         $stages = Stage::where('funnel_id', $id)->get();
 
-        return view('pipeline.store', compact('funnel', 'stages'));
+        return view('pipeline.create', compact('funnel', 'stages'));
     }
 
     public function updateDeal(Request $request)

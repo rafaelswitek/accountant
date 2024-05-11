@@ -20,21 +20,27 @@ class CompanyController extends Controller
         return view('company.index');
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        Company::create([
-            'document' => $request->get('companyDocument'),
-            'name' => $request->get('companyName'),
-            'trade' => $request->get('companyTrade'),
-            'phone' => $request->get('companyPhone'),
-            'email' => $request->get('companyEmail'),
-            'origin' => 'Manual',
-        ]);
-
-        return Redirect::route('company');
+        $customFields = $this->getCustomFields(0);
+        return view('company.edit', compact('customFields'));
     }
 
-    public function get(Request $request): LengthAwarePaginator
+    public function store(Request $request)
+    {
+        $data = $request->all();
+
+        $company = new Company;
+        $company->fill($data);
+        $company->origin = 'Manual';
+        $company->save();
+
+        $this->updateCustomFields($company->id, $data);
+
+        return Redirect::route('company.index');
+    }
+
+    public function list(Request $request): LengthAwarePaginator
     {
         $param = $request->param ?? null;
         $state = $request->state ?? null;
