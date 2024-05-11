@@ -33,7 +33,7 @@ class DealController extends Controller
             'name' => $data['dealName'],
         ]);
 
-        return Redirect::route('pipeline', ['id' => $stage->funnel_id]);
+        return Redirect::route('pipeline.index', ['id' => $stage->funnel_id]);
     }
 
     public function update(Request $request, int $id)
@@ -54,7 +54,7 @@ class DealController extends Controller
         $deal = Deal::find($id);
         $deal->delete();
 
-        return Redirect::route('pipeline');
+        return Redirect::route('pipeline.index');
     }
 
     private function getCustomFields(int $companyId): Collection

@@ -260,7 +260,7 @@
                 </div>
             </td>
             <td class="px-6 py-4">
-                <a href="/company/${data.id}" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                <a href="/company/${data.id}/edit" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
             </td>
         `
     }

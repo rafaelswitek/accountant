@@ -19,7 +19,7 @@ class PipelineController extends Controller
         $funnelSelected = Funnel::find($funnelId);
 
         if (!$funnelSelected) {
-            return Redirect::route('pipeline');
+            return Redirect::route('pipeline.index');
         }
 
         $status = $request->get('status') ?? 'opened';

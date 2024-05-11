@@ -29,16 +29,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/company', [CompanyController::class, 'create'])->name('company.create');
-    Route::get('/company', [CompanyController::class, 'index'])->name('company');
-    Route::get('/company/list', [CompanyController::class, 'get']);
-    Route::get('/company/search', [CompanyController::class, 'search'])->name('company.search');
-    Route::get('/company/{id}', [CompanyController::class, 'edit'])->name('company.edit');
+    Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
+    Route::get('/company/create', [CompanyController::class, 'create'])->name('company.create');
+    Route::post('/company', [CompanyController::class, 'store'])->name('company.store');
+    Route::get('/company/{id}/edit', [CompanyController::class, 'edit'])->name('company.edit');
     Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
+    Route::get('/company/list', [CompanyController::class, 'list'])->name('company.list');
+    Route::get('/company/search', [CompanyController::class, 'search'])->name('company.search');
 
-    Route::get('/pipeline/new', [PipelineController::class, 'create'])->name('pipeline.create');
+    Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline.index');
+    Route::get('/pipeline/create', [PipelineController::class, 'create'])->name('pipeline.create');
     Route::post('/pipeline', [PipelineController::class, 'store'])->name('pipeline.store');
-    Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline');
     Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
 
     Route::post('/deal', [DealController::class, 'create'])->name('deal.create');
