@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/company/{id}', [CompanyController::class, 'edit'])->name('company.edit');
     Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
 
+    Route::get('/pipeline/new', [PipelineController::class, 'create'])->name('pipeline.create');
+    Route::post('/pipeline', [PipelineController::class, 'store'])->name('pipeline.store');
     Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline');
     Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
 

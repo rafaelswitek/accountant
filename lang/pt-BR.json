@@ -157,5 +157,7 @@
   "Once the deal is deleted, all of its logs and data will be permanently deleted.": "Assim que a transação for excluída, todos os seus registros e dados serão excluídos permanentemente.",
   "Copy": "Copiar",
   "Copy to clipboard": "Copiar para clipboard",
-  "Company": "Empresa"
+  "Company": "Empresa",
+  "Stages": "Estágios",
+  "New": "Novo"
 }
