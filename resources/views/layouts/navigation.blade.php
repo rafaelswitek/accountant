@@ -18,8 +18,11 @@
                     <x-nav-link :href="route('pipeline.index')" :active="request()->routeIs('pipeline.*')">
                         {{ __('Pipelines') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('company.index')" :active="request()->routeIs('company') || request()->routeIs('company.*')">
+                    <x-nav-link :href="route('company.index')" :active="request()->routeIs('company.*')">
                         {{ __('Companies') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('fields.index')" :active="request()->routeIs('fields.*')">
+                        {{ __('Custom Fields') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -87,8 +90,11 @@
             <x-responsive-nav-link :href="route('pipeline.index')" :active="request()->routeIs('pipeline.*')">
                 {{ __('Pipelines') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('company.index')" :active="request()->routeIs('company') || request()->routeIs('company.*')">
+            <x-responsive-nav-link :href="route('company.index')" :active="request()->routeIs('company.*')">
                 {{ __('Companies') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('fields.index')" :active="request()->routeIs('fields.*')">
+                {{ __('Custom Fields') }}
             </x-responsive-nav-link>
         </div>
 

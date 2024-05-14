@@ -161,5 +161,6 @@
   "Stages": "Estágios",
   "New": "Novo",
   "Are you sure you want to delete the stage?": "Tem certeza de que deseja excluir o estagio?",
-  "Once the transaction is deleted, all your records and deals will be permanently deleted.": "Assim que a transação for excluída, todos os seus registros e negocios serão excluídos permanentemente."
+  "Once the transaction is deleted, all your records and deals will be permanently deleted.": "Assim que a transação for excluída, todos os seus registros e negocios serão excluídos permanentemente.",
+  "Custom Fields": "Campos Personalizados"
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomFieldsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\PipelineController;
@@ -48,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/deal/{id}', [DealController::class, 'show'])->name('pipeline.deal');
     Route::put('/deal/{id}', [DealController::class, 'update'])->name('deal.update');
     Route::delete('/deal/{id}', [DealController::class, 'destroy'])->name('deal.destroy');
+
+    Route::get('/custom-fields', [CustomFieldsController::class, 'index'])->name('fields.index');
 });
 
 require __DIR__ . '/auth.php';
