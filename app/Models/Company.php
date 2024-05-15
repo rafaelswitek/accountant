@@ -32,9 +32,9 @@ class Company extends Model
     public function scopeSearch($query, $param)
     {
         return $query->where(function ($query) use ($param) {
-            $query->where('document', 'like', "%{$param }%")
-                ->orWhere('name', 'like', "%{$param }%")
-                ->orWhere('trade', 'like', "%{$param    }%");
+            $query->where('document', 'like', "%{$param}%")
+                ->orWhere('name', 'like', "%{$param}%")
+                ->orWhere('trade', 'like', "%{$param}%");
         });
     }
 
