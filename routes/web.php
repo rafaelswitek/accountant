@@ -51,6 +51,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/deal/{id}', [DealController::class, 'destroy'])->name('deal.destroy');
 
     Route::get('/custom-fields', [CustomFieldsController::class, 'index'])->name('fields.index');
+    Route::get('/custom-fields/create', [CustomFieldsController::class, 'create'])->name('fields.create');
+    Route::post('/custom-fields', [CustomFieldsController::class, 'store'])->name('fields.store');
+    Route::get('/custom-fields/{id}/edit', [CustomFieldsController::class, 'edit'])->name('fields.edit');
+    Route::put('/custom-fields/{id}', [CustomFieldsController::class, 'update'])->name('fields.update');
+    Route::get('/custom-fields/list', [CustomFieldsController::class, 'list'])->name('fields.list');
 });
 
 require __DIR__ . '/auth.php';

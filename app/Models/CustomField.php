@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class CustomField extends Model
 {
     protected $fillable = [
+        'status',
         'info',
     ];
 
     protected $casts = [
-        'info' => 'object'
+        'info' => 'object',
     ];
 
     public $timestamps = true;
