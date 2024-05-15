@@ -38,12 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/company/list', [CompanyController::class, 'list'])->name('company.list');
     Route::get('/company/search', [CompanyController::class, 'search'])->name('company.search');
 
+    Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
     Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline.index');
     Route::get('/pipeline/create', [PipelineController::class, 'create'])->name('pipeline.create');
     Route::post('/pipeline', [PipelineController::class, 'store'])->name('pipeline.store');
     Route::get('/pipeline/{id}/edit', [PipelineController::class, 'edit'])->name('pipeline.edit');
     Route::put('/pipeline/{id}', [PipelineController::class, 'update'])->name('pipeline.update');
-    Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
 
     Route::post('/deal', [DealController::class, 'create'])->name('deal.create');
     Route::get('/deal/{id}', [DealController::class, 'show'])->name('pipeline.deal');
