@@ -16,12 +16,12 @@ class CustomFieldsController extends Controller
         return view('fields.index');
     }
 
-    public function create()
+    public function create(): View
     {
         return view('fields.edit');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $field = new CustomField;
         $field->status = $request->status;
@@ -47,14 +47,14 @@ class CustomFieldsController extends Controller
 
     public function edit(int $id): View
     {
-        $fields = CustomField::find($id);
+        $fields = CustomField::findOrFail($id);
 
         return view('fields.edit', compact('fields'));
     }
 
     public function update(Request $request, int $id): RedirectResponse
     {
-        $field = CustomField::find($id);
+        $field = CustomField::findOrFail($id);
         $field->status = $request->status;
         $field->info = [
             'type' => $request->type,
