@@ -4,27 +4,9 @@
             <div
                 class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 p-4 bg-white dark:bg-gray-900">
                 <div>
-                    <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
+                    <a href="{{ route('company.create') }}"
                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                        type="button">
-                        <span class="sr-only">Action button</span>
-                        <span id="textDropdown">Estado</span>
-                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <button id="resetForm"
-                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                        type="button">Limpar</button>
-                    <div id="dropdownAction"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:texft-gray-200"
-                            aria-labelledby="dropdownActionButton" id="statesList"
-                            style="height: 400px;overflow: auto;">
-                        </ul>
-                    </div>
+                        type="button">{{ __('Create') }}</a>
                 </div>
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
@@ -76,52 +58,10 @@
 </div>
 
 <script>
-    const brazilianStates = {
-        AC: 'Acre',
-        AL: 'Alagoas',
-        AP: 'Amapá',
-        AM: 'Amazonas',
-        BA: 'Bahia',
-        CE: 'Ceará',
-        DF: 'Distrito Federal',
-        ES: 'Espírito Santo',
-        GO: 'Goiás',
-        MA: 'Maranhão',
-        MT: 'Mato Grosso',
-        MS: 'Mato Grosso do Sul',
-        MG: 'Minas Gerais',
-        PA: 'Pará',
-        PB: 'Paraíba',
-        PR: 'Paraná',
-        PE: 'Pernambuco',
-        PI: 'Piauí',
-        RJ: 'Rio de Janeiro',
-        RN: 'Rio Grande do Norte',
-        RS: 'Rio Grande do Sul',
-        RO: 'Rondônia',
-        RR: 'Roraima',
-        SC: 'Santa Catarina',
-        SP: 'São Paulo',
-        SE: 'Sergipe',
-        TO: 'Tocantins'
-    };
-
     init()
 
     function init() {
         getData()
-        listStates()
-    }
-
-    function listStates() {
-        for (const state in brazilianStates) {
-            const li = document.createElement('li');
-            li.innerHTML = '';
-            const stateName = brazilianStates[state];
-            li.innerHTML =
-                `<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white changeStage" data-state="${state}">${stateName}</a>`
-            document.getElementById('statesList').appendChild(li)
-        }
     }
 
     function getData(page = 1) {
@@ -129,7 +69,6 @@
         const textDropdown = document.getElementById('textDropdown')
         const queryParams = {
             param: document.getElementById('searchInput').value,
-            state: textDropdown.getAttribute('data-state'),
             page: page
         };
 
@@ -264,31 +203,6 @@
             </td>
         `
     }
-
-    function resetForm() {
-        const textDropdown = document.getElementById('textDropdown')
-        textDropdown.innerHTML = 'Estado';
-        textDropdown.setAttribute("data-state", '')
-        document.getElementById('searchInput').value = '';
-        getData()
-    }
-
-    document.querySelectorAll('.changeStage').forEach(item => {
-        item.addEventListener('click', function(event) {
-
-            const state = this.getAttribute('data-state');
-
-            const textDropdown = document.getElementById('textDropdown')
-            textDropdown.innerHTML = brazilianStates[state];
-            textDropdown.setAttribute("data-state", state)
-            document.getElementById('dropdownActionButton').click()
-            getData()
-        });
-    });
-
-    document.getElementById('resetForm').addEventListener('click', function(event) {
-        resetForm()
-    });
 
     let timerId;
 

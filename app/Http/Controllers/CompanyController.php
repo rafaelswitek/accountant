@@ -43,7 +43,6 @@ class CompanyController extends Controller
     public function list(Request $request): LengthAwarePaginator
     {
         $param = $request->param ?? null;
-        $state = $request->state ?? null;
 
         return DB::table('companies')
             ->when($param, function ($query) use ($param) {
