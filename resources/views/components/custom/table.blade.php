@@ -16,33 +16,14 @@
                         placeholder="Buscar">
                 </div>
                 <div>
-                    <a href="{{ route('fields.create') }}"
+                    <a href="{{ $route }}"
                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                         type="button">{{ __('Create') }}</a>
                 </div>
             </div>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Tipo
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Label
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Obrigatorio
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Placeholder
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Status
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Ação
-                        </th>
-                    </tr>
+                    @yield('tr')
                 </thead>
                 <tbody id="searchResults"></tbody>
             </table>
@@ -59,6 +40,8 @@
     </div>
 </div>
 
+@stack('scripts')
+
 <script>
     init()
 
@@ -67,7 +50,7 @@
     }
 
     function getData(page = 1) {
-        const apiUrl = window.location.origin + '/custom-fields/list';
+        const apiUrl = `${window.location.origin}/${resource}/list`;
         const textDropdown = document.getElementById('textDropdown')
         const queryParams = {
             param: document.getElementById('searchInput').value,
@@ -155,31 +138,6 @@
         })
 
         pagination.appendChild(ul)
-    }
-
-    function parseData(data) {
-        return `
-            <td class="px-6 py-4">
-                ${data.info.type ?? '-'}
-            </td>
-            <td class="px-6 py-4">
-                ${data.info.label ?? '-'}
-            </td>
-            <td class="px-6 py-4">
-                ${data.info.required == 1 ? 'Sim' : 'Não'}
-            </td>
-            <td class="px-6 py-4">
-                ${data.info.placeholder ?? '-'}
-            </td>
-            <td class="px-6 py-4">
-                <div class="flex items-center">
-                    <div class="h-2.5 w-2.5 rounded-full bg-${data.status ? 'green' : 'red'}-500 me-2"></div> ${data.status ? 'Ativa' : 'Desativada'}
-                </div>
-            </td>
-            <td class="px-6 py-4">
-                <a href="/custom-fields/${data.id}/edit" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-            </td>
-        `
     }
 
     let timerId;

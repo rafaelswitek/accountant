@@ -41,7 +41,7 @@ class CustomFieldsController extends Controller
         $param = $request->param;
 
         return CustomField::when($param, function ($query) use ($param) {
-            return $query->where('info', 'like', "%$param%");
+            return $query->whereRaw('LOWER(info) LIKE LOWER(?)', ["%{$param}%"]);
         })->paginate(10);
     }
 

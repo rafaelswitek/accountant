@@ -47,9 +47,9 @@ class CompanyController extends Controller
         return DB::table('companies')
             ->when($param, function ($query) use ($param) {
                 return $query->where(function ($query) use ($param) {
-                    $query->where('document', 'like', "%{$param}%")
-                        ->orWhere('name', 'like', "%{$param}%")
-                        ->orWhere('trade', 'like', "%{$param}%");
+                    $query->whereRaw('LOWER(document) LIKE LOWER(?)', ["%{$param}%"])
+                        ->orWhereRaw('LOWER(name) LIKE LOWER(?)', "%{$param}%")
+                        ->orWhereRaw('LOWER(trade) LIKE LOWER(?)', "%{$param}%");
                 });
             })
             ->paginate(10);
