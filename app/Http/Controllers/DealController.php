@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\CustomField;
 use App\Models\Deal;
 use App\Models\Stage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Action;
 use Illuminate\Support\Facades\Redirect;
 
 class DealController extends Controller
@@ -17,7 +19,10 @@ class DealController extends Controller
         $stages = Stage::where('funnel_id', $deal->stage->funnel_id)->get();
         $funnels = Stage::with('funnel')->orderBy('funnel_id')->get();
         $customFields = $this->getCustomFields($deal->company_id);
-        return view('deal.show', compact('deal', 'stages', 'funnels', 'customFields'));
+        $scheduled = Activity::where('finished', false)->get();
+        $completed = Activity::where('finished', true)->get();
+
+        return view('deal.show', compact('deal', 'stages', 'funnels', 'customFields', 'scheduled', 'completed'));
     }
 
     public function create(Request $request)
