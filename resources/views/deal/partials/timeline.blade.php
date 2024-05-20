@@ -1,4 +1,4 @@
-<x-modal name="new-deal" focusable>
+<x-modal name="activity" focusable>
     <form method="post" action="{{ route('deal.activity.store', ['id' => $deal->id]) }}" class="p-6">
         @csrf
 
@@ -86,7 +86,7 @@
     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
         aria-labelledby="profile-tab">
         <x-primary-button class="me-2" x-data=""
-            x-on:click.prevent="$dispatch('open-modal', 'new-deal')">
+            x-on:click.prevent="$dispatch('open-modal', 'activity')">
             <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
