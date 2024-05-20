@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomFieldsController;
 use App\Http\Controllers\DashboardController;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/deal/{id}', [DealController::class, 'show'])->name('pipeline.deal');
     Route::put('/deal/{id}', [DealController::class, 'update'])->name('deal.update');
     Route::delete('/deal/{id}', [DealController::class, 'destroy'])->name('deal.destroy');
+    Route::post('/deal/{id}/activity', [ActivityController::class, 'store'])->name('deal.activity.store');
 
     Route::get('/custom-fields', [CustomFieldsController::class, 'index'])->name('fields.index');
     Route::get('/custom-fields/create', [CustomFieldsController::class, 'create'])->name('fields.create');
