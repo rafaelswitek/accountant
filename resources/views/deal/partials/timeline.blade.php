@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <div>
-                            <x-primary-button class="me-2">
+                            <x-primary-button class="me-2 remove">
                                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -189,7 +189,7 @@
                             </div>
                         </div>
                         <div>
-                            <x-primary-button class="me-2">
+                            <x-primary-button class="me-2 remove">
                                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -315,4 +315,34 @@
                 });
         }
     }
+
+    var buttons = document.querySelectorAll('.remove');
+
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            this.disabled = true
+            var node = this.closest('li');
+            var activityId = node.getAttribute('data-activity-id');
+
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+            };
+
+            fetch(`/deal/activity/${activityId}`, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na solicitação');
+                    }
+                    node.remove()
+                    showAlert(`Atividade removida`)
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+        });
+    });
 </script>

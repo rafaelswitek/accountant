@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Redirect;
 
 class ActivityController extends Controller
 {
-    public function store(Request $request, string $dealId): RedirectResponse
+    public function store(Request $request, string $id): RedirectResponse
     {
         $activity = new Activity();
         $activity->user_id = auth()->user()->id;
-        $activity->deal_id = $dealId;
+        $activity->deal_id = $id;
         $activity->title = $request->activityTitle;
         $activity->description = $request->activityDescription;
         $activity->date = Carbon::createFromFormat('d/m/Y H:i', "{$request->activityDate} {$request->activityTime}");
@@ -32,6 +32,14 @@ class ActivityController extends Controller
         $activity->finished = !$activity->finished;
 
         $activity->save();
+
+        return response()->json($activity);
+    }
+
+    public function destroy(string $id): JsonResponse
+    {
+        $activity = Activity::find($id);
+        $activity->delete();
 
         return response()->json($activity);
     }
