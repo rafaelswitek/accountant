@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/deal/{id}', [DealController::class, 'update'])->name('deal.update');
     Route::delete('/deal/{id}', [DealController::class, 'destroy'])->name('deal.destroy');
     Route::post('/deal/{id}/activity', [ActivityController::class, 'store'])->name('deal.activity.store');
+    Route::put('/deal/activity/{id}', [ActivityController::class, 'update'])->name('deal.activity.update');
 
     Route::get('/custom-fields', [CustomFieldsController::class, 'index'])->name('fields.index');
     Route::get('/custom-fields/create', [CustomFieldsController::class, 'create'])->name('fields.create');

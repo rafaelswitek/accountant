@@ -87,7 +87,7 @@
             Criar
         </x-primary-button>
         <div
-            class="p-5 mb-4 border border-gray-100 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700 mt-4 ml-8">
+            class="p-5 mb-4 border border-gray-100 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700 mt-4 ml-8 droppable">
             <time class="text-lg font-semibold text-gray-900 dark:text-white flex">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -97,11 +97,11 @@
 
                 Agendados
             </time>
-            <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700 overflow-y-scroll h-64">
+            <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700 overflow-y-scroll h-64 drop-zone">
                 @foreach ($scheduled as $row)
-                    <li>
-                        <a href="#"
-                            class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <li class="flex justify-between items-center hover:bg-gray-100 dark:hover:bg-gray-700 draggable"
+                        draggable="true" data-activity-id="{{ $row->id }}">
+                        <div class="items-center block p-3 sm:flex">
                             @if (!$row->user->photo)
                                 <div
                                     class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 w-12 h-12 mb-3 me-3 rounded-full sm:mb-0">
@@ -128,13 +128,24 @@
                                     {{ \Carbon\Carbon::parse($row->date)->format('d/m/Y H:i') }}
                                 </span>
                             </div>
-                        </a>
+                        </div>
+                        <div>
+                            <x-primary-button class="me-2">
+                                <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                </svg>
+                            </x-primary-button>
+                        </div>
                     </li>
                 @endforeach
             </ol>
         </div>
         <div
-            class="p-5 mb-4 border border-gray-100 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700 mt-8 ml-8">
+            class="p-5 mb-4 border border-gray-100 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700 mt-8 ml-8 droppable">
             <time class="text-lg font-semibold text-gray-900 dark:text-white flex">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -145,11 +156,11 @@
 
                 Concluidos
             </time>
-            <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700 overflow-y-scroll h-64">
+            <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700 overflow-y-scroll h-64 drop-zone">
                 @foreach ($completed as $row)
-                    <li>
-                        <a href="#"
-                            class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <li class="flex justify-between items-center hover:bg-gray-100 dark:hover:bg-gray-700 draggable"
+                        draggable="true" data-activity-id="{{ $row->id }}">
+                        <div class="items-center block p-3 sm:flex">
                             @if (!$row->user->photo)
                                 <div
                                     class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 w-12 h-12 mb-3 me-3 rounded-full sm:mb-0">
@@ -176,7 +187,18 @@
                                     {{ \Carbon\Carbon::parse($row->date)->format('d/m/Y H:i') }}
                                 </span>
                             </div>
-                        </a>
+                        </div>
+                        <div>
+                            <x-primary-button class="me-2">
+                                <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                </svg>
+                            </x-primary-button>
+                        </div>
                     </li>
                 @endforeach
             </ol>
@@ -226,3 +248,71 @@
         </div>
     </div>
 </div>
+
+<script>
+    let draggedItem = null;
+    const draggableElements = document.querySelectorAll(".draggable");
+    const droppableElements = document.querySelectorAll(".droppable");
+
+    draggableElements.forEach(elem => {
+        elem.addEventListener("dragstart", dragStart);
+        elem.addEventListener("dragend", dragEnd);
+    });
+
+    droppableElements.forEach(elem => {
+        elem.addEventListener("dragover", dragOver);
+        elem.addEventListener("dragenter", dragEnter);
+        elem.addEventListener("dragleave", dragLeave);
+        elem.addEventListener("drop", drop);
+    });
+
+    function dragStart() {
+        draggedItem = this;
+        this.classList.add("dragging");
+    }
+
+    function dragEnd() {
+        draggedItem = null;
+        this.classList.remove("dragging");
+    }
+
+    function dragOver(e) {
+        e.preventDefault();
+    }
+
+    function dragEnter(e) {
+        e.preventDefault();
+        this.classList.add("hovered");
+    }
+
+    function dragLeave() {}
+
+    function drop() {
+        if (draggedItem !== null) {
+            const activityId = draggedItem.dataset.activityId;
+            const destinationStage = this.querySelector('.drop-zone');
+            destinationStage.appendChild(draggedItem);
+            draggedItem = null;
+            this.classList.remove("hovered");
+
+            const options = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+            };
+
+            fetch(`/deal/activity/${activityId}`, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na solicitação');
+                    }
+                    showAlert(`Atividade atualizada`)
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+        }
+    }
+</script>
