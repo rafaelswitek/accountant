@@ -153,7 +153,7 @@
   "Lost": "Perdido",
   "Deal": "Negócio",
   "Funnel": "Funil",
-  "Are you sure you want to delete the deal?": "Tem certeza de que deseja excluir o negocio?",
+  "Are you sure you want to delete the deal?": "Tem certeza de que deseja excluir o negócio?",
   "Once the deal is deleted, all of its logs and data will be permanently deleted.": "Assim que a transação for excluída, todos os seus registros e dados serão excluídos permanentemente.",
   "Copy": "Copiar",
   "Copy to clipboard": "Copiar para clipboard",
@@ -161,6 +161,6 @@
   "Stages": "Estágios",
   "New": "Novo",
   "Are you sure you want to delete the stage?": "Tem certeza de que deseja excluir o estagio?",
-  "Once the transaction is deleted, all your records and deals will be permanently deleted.": "Assim que a transação for excluída, todos os seus registros e negocios serão excluídos permanentemente.",
+  "Once the transaction is deleted, all your records and deals will be permanently deleted.": "Assim que a transação for excluída, todos os seus registros e negócios serão excluídos permanentemente.",
   "Custom Fields": "Campos Personalizados"
 }

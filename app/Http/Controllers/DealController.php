@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\CustomField;
 use App\Models\Deal;
 use App\Models\Stage;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Action;
@@ -21,8 +22,9 @@ class DealController extends Controller
         $customFields = $this->getCustomFields($deal->company_id);
         $scheduled = Activity::where('finished', false)->get();
         $completed = Activity::where('finished', true)->get();
+        $sellers = User::all();
 
-        return view('deal.show', compact('deal', 'stages', 'funnels', 'customFields', 'scheduled', 'completed'));
+        return view('deal.show', compact('deal', 'stages', 'funnels', 'customFields', 'scheduled', 'completed', 'sellers'));
     }
 
     public function create(Request $request)
@@ -48,6 +50,7 @@ class DealController extends Controller
         $deal = Deal::find($id);
         $deal->name = $data['dealName'] ?? $deal->name;
         $deal->stage_id = $data['stageId'] ?? $deal->stage_id;
+        $deal->user_id = $data['sellerId'] ?? $deal->user_id;
         $deal->status = $data['dealStatus'] ?? $deal->status;
         $deal->save();
 
