@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 
 class CompanyController extends Controller
 {
@@ -33,6 +34,15 @@ class CompanyController extends Controller
         $company = new Company;
         $company->fill($data);
         $company->origin = 'Manual';
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $photo = file_get_contents($image);
+
+            $company->photo = $photo;
+        }
+
         $company->save();
 
         $this->updateCustomFields($company->id, $data);
@@ -45,6 +55,7 @@ class CompanyController extends Controller
         $param = $request->param ?? null;
 
         return DB::table('companies')
+            ->select('id', 'document', 'name', 'trade', 'phone', 'email', 'status', 'keys', 'origin')
             ->when($param, function ($query) use ($param) {
                 return $query->where(function ($query) use ($param) {
                     $query->whereRaw('LOWER(document) LIKE LOWER(?)', ["%{$param}%"])
@@ -83,11 +94,40 @@ class CompanyController extends Controller
 
         $company = Company::find($id);
         $company->fill($data);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $photo = file_get_contents($image);
+
+            $company->photo = $photo;
+        }
+
         $company->update();
 
         $this->updateCustomFields($id, $data);
 
         return Redirect::route('company.edit', compact('id'))->with('status', 'company-updated');
+    }
+
+    public function showImage(Request $request)
+    {
+        $company = Company::find($request->id);
+
+        if (!$company || !$company->photo) {
+            $imagePath = public_path('img\company.png');
+            $image = file_get_contents($imagePath);
+
+            return response()->make($image, 200, [
+                'Content-Type' => 'image/png',
+                'Content-Disposition' => 'inline; filename="imagem.png"',
+            ]);
+        }
+
+        return Response::make($company->photo, 200, [
+            'Content-Type' => 'image/jpeg',
+            'Content-Disposition' => 'inline; filename="imagem.jpg"',
+        ]);
     }
 
     private function getCustomFields(int $companyId): Collection

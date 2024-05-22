@@ -63,8 +63,7 @@
                                     </svg>
                                     <span class="ml-1 leading-none">1</span>
                                 </div> --}}
-                                <img class="w-6 h-6 ml-auto rounded-full"
-                                    src="https://randomuser.me/api/portraits/men/{{ $deal->user_id }}.jpg" />
+                                <img class="w-6 h-6 ml-auto rounded-full" src="{{ route('profile.image', ['id' => $deal->user_id]) }}" />
                             </div>
                         </a>
                     @endforeach

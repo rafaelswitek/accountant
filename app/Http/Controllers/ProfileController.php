@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Response;
 
 class ProfileController extends Controller
 {
@@ -30,6 +32,14 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $photo = file_get_contents($image);
+
+            $request->user()->photo = $photo;
         }
 
         $request->user()->save();
@@ -56,5 +66,25 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function showImage(Request $request)
+    {
+        $user = User::find($request->id);
+
+        if (!$user || !$user->photo) {
+            $imagePath = public_path('adminlte\dist\img\avatar5.png');
+            $image = file_get_contents($imagePath);
+
+            return response()->make($image, 200, [
+                'Content-Type' => 'image/png',
+                'Content-Disposition' => 'inline; filename="imagem.png"',
+            ]);
+        }
+
+        return Response::make($user->photo, 200, [
+            'Content-Type' => 'image/jpeg',
+            'Content-Disposition' => 'inline; filename="imagem.jpg"',
+        ]);
     }
 }

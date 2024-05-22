@@ -13,16 +13,7 @@ use Illuminate\Support\Facades\Log;
 class Company extends Model
 {
     protected $fillable = [
-        'document',
-        'name',
-        'trade',
-        'phone',
-        'email',
-        'openingData',
-        'status',
-        'keys',
-        'origin',
-        'photo',
+        'photo', 'document', 'name', 'trade', 'phone', 'email', 'status', 'keys', 'origin'
     ];
 
     protected $casts = [

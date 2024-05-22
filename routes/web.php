@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/image', [ProfileController::class, 'showImage'])->name('profile.image');
 
     Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
     Route::get('/company/create', [CompanyController::class, 'create'])->name('company.create');
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
     Route::get('/company/list', [CompanyController::class, 'list'])->name('company.list');
     Route::get('/company/search', [CompanyController::class, 'search'])->name('company.search');
+    Route::get('/company/image', [CompanyController::class, 'showImage'])->name('company.image');
 
     Route::put('/pipeline/update-deal', [PipelineController::class, 'updateDeal']);
     Route::get('/pipeline', [PipelineController::class, 'index'])->name('pipeline.index');
