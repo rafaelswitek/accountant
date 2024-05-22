@@ -19,37 +19,36 @@
                     <div class="w-full">
                         <label for="document"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CNPJ</label>
-                        <input type="text" name="document" id="document"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            value="{{ @$company->document }}">
+                        <x-input-clipboard label="document" text="{{ @$company->document }}" disabled="false"
+                            readonly="false"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
                     </div>
                     <div class="w-full">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Razão
                             Social</label>
-                        <input type="text" name="name" id="name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Razão Social" value="{{ @$company->name }}">
+                        <x-input-clipboard label="name" text="{{ @$company->name }}" disabled="false" readonly="false"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
                     </div>
                     <div class="w-full">
                         <label for="trade" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome
-                            Fantasia</label>
-                        <input type="text" name="trade" id="trade"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Nome Fantasia" value="{{ @$company->trade }}" required>
+                            Fantasia*</label>
+                        <x-input-clipboard label="trade" text="{{ @$company->trade }}" disabled="false"
+                            readonly="false" required="true"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
                     </div>
                     <div class="w-full">
                         <label for="phone"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefone</label>
-                        <input type="text" name="phone" id="phone"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Telefone" value="{{ @$company->phone }}">
+                        <x-input-clipboard label="phone" text="{{ @$company->phone }}" disabled="false"
+                            readonly="false"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
                     </div>
                     <div class="w-full">
                         <label for="email"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input type="email" name="email" id="email"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Email" value="{{ @$company->email }}">
+                        <x-input-clipboard label="email" text="{{ @$company->email }}" disabled="false"
+                            readonly="false"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
                     </div>
                 </div>
                 <div class="py-8">
@@ -59,12 +58,12 @@
                             <div class="w-full">
                                 <label for="brand"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $cField->info->label }}{{ $cField->info->required ? '*' : '' }}</label>
-                                <input type="text" name="custom_{{ $cField->id }}"
-                                    id="custom_{{ $cField->id }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                <x-input-clipboard label="custom_{{ $cField->id }}"
+                                    text="{{ $cField->values->info->value ?? null }}" disabled="false" readonly="false"
+                                    required="{{ $cField->info->required ? 'true' : 'false' }}"
                                     placeholder="{{ $cField->info->placeholder }}"
-                                    value="{{ $cField->values->info->value ?? null }}"
-                                    {{ $cField->info->required ? 'required' : '' }}>
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+
                             </div>
                         @endforeach
                     </div>

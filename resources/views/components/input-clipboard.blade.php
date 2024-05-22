@@ -1,13 +1,22 @@
-@props(['label','text'])
+@props([
+    'label',
+    'text',
+    'disabled' => 'true',
+    'readonly' => 'true',
+    'required' => 'false',
+    'placeholder' => '',
+    'class' =>
+        'col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500',
+])
 
-@if ($label && $text && $label != 'id')
+@if ($label && $label != 'id')
     <div class="w-full max-w-[16rem] mt-2 ml-2">
         <div class="relative">
             <label for="{{ $label }}-button" class="sr-only">{{ $label }}</label>
-            <input id="{{ $label }}-button" type="text"
-                class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value="{{ $text }}" disabled readonly>
-            <button data-copy-to-clipboard-target="{{ $label }}-button"
+            <input id="{{ $label }}-button" name="{{ $label }}" type="text" class="{{ $class }}"
+                value="{{ $text }}" placeholder="{{ $placeholder }}" {{ $required === 'true' ? 'required' : '' }}
+                {{ $disabled === 'true' ? 'disabled' : '' }} {{ $readonly === 'true' ? 'readonly' : '' }}>
+            <button type="button" data-copy-to-clipboard-target="{{ $label }}-button"
                 data-tooltip-target="tooltip-copy-{{ $label }}-button"
                 class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 inline-flex items-center justify-center">
                 <span id="default-icon">
