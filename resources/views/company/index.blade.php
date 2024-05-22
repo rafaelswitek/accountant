@@ -35,15 +35,12 @@
 
             function parseData(data) {
                 return `
-                    <th scope="row"
-                        class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                        <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                            <span class="font-medium text-gray-600 dark:text-gray-300">${extractInitial(data.trade ?? data.name)}</span>
-                        </div>
+                    <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                        <img class="w-10 h-10 rounded-full" src="/company/image?id=${data.id}" alt="${data.trade} image">
                         <div class="ps-3">
                             ${data.name ? `<div class="text-base font-semibold">${data.name}</div>` : ''}
                             <div class="font-medium text-gray-500">${data.document ? maskCNPJ(data.document) : ''}</div>
-                            <div class="font-normal text-gray-500">${data.trade }</div>
+                            <div class="font-normal text-gray-500">${data.trade}</div>
                         </div>
                     </th>
                     <td class="px-6 py-4">

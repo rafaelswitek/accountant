@@ -8,7 +8,8 @@
                     class="font-medium text-gray-600 dark:text-gray-300">{{ \App\Helpers\Text::extractInitial($activity->user->name) }}</span>
             </div>
         @else
-            <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0" src="{{ $activity->user->photo }}"
+            <img class="w-12 h-12 mb-3 me-3 rounded-full sm:mb-0"
+                src="{{ route('profile.image', ['id' => $activity->user->id]) }}"
                 alt="{{ $activity->user->name }} image" />
         @endif
         <div class="text-gray-600 dark:text-gray-400">
