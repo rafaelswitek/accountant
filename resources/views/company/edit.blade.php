@@ -54,9 +54,13 @@
                     <div class="w-full">
                         <label for="photo"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Foto</label>
-                        <img src="{{ route('company.image', ['id' => @$company->id]) }}" alt="Imagem" width="215"
-                            height="215">
-                        <input type="file" name="image">
+                        <figure class="max-w-lg">
+                            <img id="imagePreview" src="{{ route('company.image', ['id' => @$company->id]) }}"
+                                alt="Imagem" width="215" height="215">
+                            <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">
+                                <input type="file" name="image" id="fileInput">
+                            </figcaption>
+                        </figure>
                     </div>
                 </div>
                 <div class="py-8">
