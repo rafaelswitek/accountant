@@ -54,11 +54,12 @@
                     <div class="w-full">
                         <label for="status"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                        <select id="stageId" name="stageId"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        <select id="status" name="status"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-600 dark:focus:border-primary-600"
                             required>
-                            <option value="{{ @$company->status }}" {{ @$company->status == 1 ? 'selected' : '' }}>Ativo</option>
-                            <option value="{{ @$company->status }}" {{ @$company->status == 0 ? 'selected' : '' }}>Inativo</option>
+                            <option value="1" {{ @$company->status == true ? 'selected' : '' }}>Ativo</option>
+                            <option value="0" {{ @$company->status == false ? 'selected' : '' }}>Inativo
+                            </option>
                         </select>
                     </div>
                     <div class="w-full">

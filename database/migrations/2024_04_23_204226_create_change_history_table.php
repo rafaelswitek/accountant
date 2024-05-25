@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('change history', function (Blueprint $table) {
+        Schema::create('change_history', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('table');
             $table->json('payload');
             $table->timestamps();
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('change history');
+        Schema::dropIfExists('change_history');
     }
 };

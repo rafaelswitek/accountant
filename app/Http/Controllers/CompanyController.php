@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChangeHistory;
 use App\Models\Company;
 use App\Models\CustomField;
 use App\Models\CustomFieldValue;
@@ -93,6 +94,7 @@ class CompanyController extends Controller
         $data = $request->all();
 
         $company = Company::find($id);
+        $original = $company->toArray();
         $company->fill($data);
 
         if ($request->hasFile('image')) {
@@ -104,6 +106,10 @@ class CompanyController extends Controller
         }
 
         $company->update();
+
+        $new = $company->toArray();
+
+        ChangeHistory::log('companies', $original, $new);
 
         $this->updateCustomFields($id, $data);
 
@@ -144,7 +150,6 @@ class CompanyController extends Controller
         foreach ($customFields as $key => $value) {
             $condition = ['field_id' => $key, 'company_id' => $companyId];
             $data = array_merge($condition, ['info' => ['value' => $value]]);
-
 
             CustomFieldValue::updateOrCreate($condition, $data);
         }
