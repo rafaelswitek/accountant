@@ -26,6 +26,7 @@
                             <span
                                 class="flex items-center h-6 px-3 text-xs font-semibold text-{{ App\Helpers\FromTo::colorStatusDeal($deal->status) }}-500 bg-{{ App\Helpers\FromTo::colorStatusDeal($deal->status) }}-100 rounded-full">{{ App\Helpers\FromTo::statusDeal($deal->status) }}</span>
                             <h4 class="mt-3 text-sm font-medium">{{ $deal->name }}</h4>
+                            <h3 class="mt-3 text-sm font-medium">{{ $deal->company->name ?? $deal->company->trade }}</h3>
                             <div class="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
                                 <div class="flex items-center">
                                     <svg class="w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg"

@@ -69,7 +69,7 @@ class CompanyController extends Controller
     public function search(Request $request): array
     {
         $param = explode(' - ', $request->param);
-        return Company::select('id', 'document', 'name')
+        return Company::select('id', 'document', 'name', 'trade')
             ->when($param[0], function ($query) use ($param) {
                 return $query->search($param[0]);
             })
