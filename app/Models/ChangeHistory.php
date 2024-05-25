@@ -14,7 +14,25 @@ class ChangeHistory extends Model
         'payload',
     ];
 
-    public $timestamps = true;
+    protected $with = [
+        'user',
+    ];
+
+    protected $casts = [
+        'payload' => 'object',
+    ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderByDesc('created_at');
+        });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public static function log(string $table, array $original, array $new)
     {
@@ -38,10 +56,10 @@ class ChangeHistory extends Model
             ChangeHistory::create([
                 'user_id' => auth()->user()->id,
                 'table' => $table,
-                'payload' => json_encode([
+                'payload' => [
                     'id' => $original['id'],
                     'changes' => $changes
-                ]),
+                ],
             ]);
         }
     }

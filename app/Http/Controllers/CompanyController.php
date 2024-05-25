@@ -25,7 +25,8 @@ class CompanyController extends Controller
     public function create()
     {
         $customFields = $this->getCustomFields(0);
-        return view('company.edit', compact('customFields'));
+        $changes = [];
+        return view('company.edit', compact('customFields', 'changes'));
     }
 
     public function store(Request $request)
@@ -85,8 +86,11 @@ class CompanyController extends Controller
     {
         $company = Company::find($id);
         $customFields = $this->getCustomFields($id);
+        $changes = ChangeHistory::where('table', 'companies')
+            ->where('payload', 'like', '%"id": ' . $id . '%')
+            ->get();
 
-        return view('company.edit', compact('company', 'customFields'));
+        return view('company.edit', compact('company', 'customFields', 'changes'));
     }
 
     public function update(Request $request, int $id): RedirectResponse
