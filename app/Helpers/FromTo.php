@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Str;
+
 final class FromTo
 {
     public static function colorStatusDeal(string $status): string
@@ -24,5 +26,22 @@ final class FromTo
         ];
 
         return $statusColors[$status];
+    }
+
+    public static function company(string $text): string
+    {
+        $fields = [
+            'document' => 'CNPJ',
+            'name' => 'Razão Social',
+            'trade' => 'Nome Fantasia',
+            'phone' => 'Telefone',
+        ];
+
+        return $fields[$text] ?? Str::ucfirst($text);
+    }
+
+    public static function status(string $value): string
+    {
+        return $value ? 'Ativo' : 'Inativo';
     }
 }

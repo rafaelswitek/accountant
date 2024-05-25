@@ -164,13 +164,13 @@
                                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                         <th scope="row"
                                                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            {{ $field->field }}
+                                                            {{ \App\Helpers\FromTo::company($field->field) }}
                                                         </th>
                                                         <td class="px-6 py-4">
-                                                            {{ $field->old }}
+                                                            {{ $field->field == 'status' ? \App\Helpers\FromTo::status($field->old) : $field->old }}
                                                         </td>
                                                         <td class="px-6 py-4">
-                                                            {{ $field->new }}
+                                                            {{ $field->field == 'status' ? \App\Helpers\FromTo::status($field->new) : $field->new }}
                                                         </td>
                                                     </tr>
                                                 @endforeach
