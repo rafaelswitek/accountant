@@ -52,7 +52,9 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <div class="h-2.5 w-2.5 rounded-full bg-${data.status ? 'green' : 'red'}-500 me-2"></div> ${data.status ? 'Ativo' : 'Inativo'}
+                            ${data.status ? 
+                            '<div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Ativo' :
+                            '<div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Inativo' }
                         </div>
                     </td>
                     <td class="px-6 py-4">
