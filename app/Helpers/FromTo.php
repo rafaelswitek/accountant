@@ -28,13 +28,14 @@ final class FromTo
         return $statusColors[$status];
     }
 
-    public static function company(string $text): string
+    public static function historyLabel(string $text): string
     {
         $fields = [
             'document' => 'CNPJ',
             'name' => 'Razão Social',
             'trade' => 'Nome Fantasia',
             'phone' => 'Telefone',
+            'required' => 'Obrigatorio',
         ];
 
         return $fields[$text] ?? Str::ucfirst($text);

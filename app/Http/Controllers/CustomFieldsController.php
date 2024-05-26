@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChangeHistory;
 use App\Models\CustomField;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
@@ -48,13 +49,17 @@ class CustomFieldsController extends Controller
     public function edit(int $id): View
     {
         $fields = CustomField::findOrFail($id);
+        $changes = ChangeHistory::where('table', 'custom_fields')
+            ->where('payload', 'like', '%"id": ' . $id . '%')
+            ->get();
 
-        return view('fields.edit', compact('fields'));
+        return view('fields.edit', compact('fields', 'changes'));
     }
 
     public function update(Request $request, int $id): RedirectResponse
     {
         $field = CustomField::findOrFail($id);
+        $old = $field->toArray();
         $field->status = $request->status;
         $field->info = [
             'type' => $request->type,
@@ -63,6 +68,25 @@ class CustomFieldsController extends Controller
             'placeholder' => $request->placeholder,
         ];
         $field->update();
+
+        $new = $field->toArray();
+
+        $old = [
+            'id' => $old['id'],
+            'status' => $old['status'],
+            'label' => $old['info']->label,
+            'required' => $old['info']->required,
+            'placeholder' => $old['info']->placeholder,
+        ];
+        $new = [
+            'id' => $new['id'],
+            'status' => $new['status'],
+            'label' => $new['info']->label,
+            'required' => $new['info']->required,
+            'placeholder' => $new['info']->placeholder,
+        ];
+
+        ChangeHistory::log('custom_fields', $old, $new);
 
         return Redirect::route('fields.edit', compact('id'))->with('status', 'field-updated');
     }

@@ -84,7 +84,7 @@ class CompanyController extends Controller
 
     public function edit(int $id): View
     {
-        $company = Company::find($id);
+        $company = Company::findOrFail($id);
         $customFields = $this->getCustomFields($id);
         $changes = ChangeHistory::where('table', 'companies')
             ->where('payload', 'like', '%"id": ' . $id . '%')
@@ -97,7 +97,7 @@ class CompanyController extends Controller
     {
         $data = $request->all();
 
-        $company = Company::find($id);
+        $company = Company::findOrFail($id);
         $old = $company->toArray();
         $company->fill($data);
 
@@ -122,7 +122,7 @@ class CompanyController extends Controller
 
     public function showImage(Request $request)
     {
-        $company = Company::find($request->id);
+        $company = Company::findOrFail($request->id);
 
         if (!$company || !$company->photo) {
             $imagePath = public_path('img\company.png');

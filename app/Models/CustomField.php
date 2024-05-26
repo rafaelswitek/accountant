@@ -13,6 +13,7 @@ class CustomField extends Model
 
     protected $casts = [
         'info' => 'object',
+        'status' => 'boolean'
     ];
 
     public $timestamps = true;
