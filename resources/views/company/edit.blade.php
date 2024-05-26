@@ -167,10 +167,10 @@
                                                             {{ \App\Helpers\FromTo::historyLabel($field->field) }}
                                                         </th>
                                                         <td class="px-6 py-4">
-                                                            {{ $field->field == 'status' ? \App\Helpers\FromTo::status($field->old) : $field->old }}
+                                                            {{ \App\Helpers\FromTo::status($field->field, $field->old) }}
                                                         </td>
                                                         <td class="px-6 py-4">
-                                                            {{ $field->field == 'status' ? \App\Helpers\FromTo::status($field->new) : $field->new }}
+                                                            {{ \App\Helpers\FromTo::status($field->field, $field->new) }}
                                                         </td>
                                                     </tr>
                                                 @endforeach

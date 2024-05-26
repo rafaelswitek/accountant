@@ -19,7 +19,8 @@ class CustomFieldsController extends Controller
 
     public function create(): View
     {
-        return view('fields.edit');
+        $changes = [];
+        return view('fields.edit', compact('changes'));
     }
 
     public function store(Request $request): RedirectResponse
