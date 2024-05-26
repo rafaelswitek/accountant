@@ -159,18 +159,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($change->payload->changes as $field)
+                                                @foreach ($change->payload->changes as $row)
                                                     <tr
                                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                         <th scope="row"
                                                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            {{ \App\Helpers\FromTo::historyLabel($field->field) }}
+                                                            {{ \App\Helpers\FromTo::historyLabel($row->field) }}
                                                         </th>
                                                         <td class="px-6 py-4">
-                                                            {{ \App\Helpers\FromTo::status($field->field, $field->old) }}
+                                                            {{ \App\Helpers\FromTo::status($row->field, $row->old) }}
                                                         </td>
                                                         <td class="px-6 py-4">
-                                                            {{ \App\Helpers\FromTo::status($field->field, $field->new) }}
+                                                            {{ \App\Helpers\FromTo::status($row->field, $row->new) }}
                                                         </td>
                                                     </tr>
                                                 @endforeach
