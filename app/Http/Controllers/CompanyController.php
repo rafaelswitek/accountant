@@ -122,7 +122,7 @@ class CompanyController extends Controller
 
     public function showImage(Request $request)
     {
-        $company = Company::findOrFail($request->id);
+        $company = Company::find($request->id);
 
         if (!$company || !$company->photo) {
             $imagePath = public_path('img\company.png');
