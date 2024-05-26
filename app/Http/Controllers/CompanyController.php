@@ -159,7 +159,7 @@ class CompanyController extends Controller
             $customFieldOld = CustomFieldValue::where($condition)->first();
             $customFieldNew = CustomFieldValue::updateOrCreate($condition, $data);
 
-            $old[$customFieldNew->fields->info->label] = $customFieldOld->info->value ?? '';
+            $old[$customFieldNew->fields->info->label] = $customFieldOld->info->value ?? null;
             $new[$customFieldNew->fields->info->label] = $value;
         }
 
