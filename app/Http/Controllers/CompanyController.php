@@ -98,7 +98,7 @@ class CompanyController extends Controller
         $data = $request->all();
 
         $company = Company::find($id);
-        $original = $company->toArray();
+        $old = $company->toArray();
         $company->fill($data);
 
         if ($request->hasFile('image')) {
@@ -113,9 +113,9 @@ class CompanyController extends Controller
 
         $new = $company->toArray();
 
-        ChangeHistory::log('companies', $original, $new);
+        $custom = $this->updateCustomFields($id, $data);
 
-        $this->updateCustomFields($id, $data);
+        ChangeHistory::log('companies', array_merge($old, $custom['old']), array_merge($new, $custom['new']));
 
         return Redirect::route('company.edit', compact('id'))->with('status', 'company-updated');
     }
@@ -147,16 +147,23 @@ class CompanyController extends Controller
         }])->where('status', true)->get();
     }
 
-    private function updateCustomFields(int $companyId, array $data): void
+    private function updateCustomFields(int $companyId, array $data): array
     {
         $customFields = $this->extractCustomFields($data);
-
+        $old = [];
+        $new = [];
         foreach ($customFields as $key => $value) {
             $condition = ['field_id' => $key, 'company_id' => $companyId];
             $data = array_merge($condition, ['info' => ['value' => $value]]);
 
-            CustomFieldValue::updateOrCreate($condition, $data);
+            $customFieldOld = CustomFieldValue::where($condition)->first();
+            $customFieldNew = CustomFieldValue::updateOrCreate($condition, $data);
+
+            $old[$customFieldNew->fields->info->label] = $customFieldOld->info->value ?? '';
+            $new[$customFieldNew->fields->info->label] = $value;
         }
+
+        return ['old' => $old, 'new' => $new];
     }
 
     private function extractCustomFields(array $data): array

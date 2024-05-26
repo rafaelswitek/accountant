@@ -34,19 +34,20 @@ class ChangeHistory extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function log(string $table, array $original, array $new)
+    public static function log(string $table, array $old, array $new)
     {
         $changes = [];
 
         foreach ($new as $key => $value) {
             if (
-                array_key_exists($key, $original) &&
-                $original[$key] !== $value &&
-                $key !== 'updated_at'
+                array_key_exists($key, $old) &&
+                $old[$key] !== $value &&
+                $key !== 'updated_at' &&
+                $key !== 'photo'
             ) {
                 $changes[] = [
                     'field' => $key,
-                    'old' => $original[$key],
+                    'old' => $old[$key],
                     'new' => $value,
                 ];
             }
@@ -57,7 +58,7 @@ class ChangeHistory extends Model
                 'user_id' => auth()->user()->id,
                 'table' => $table,
                 'payload' => [
-                    'id' => $original['id'],
+                    'id' => $old['id'],
                     'changes' => $changes
                 ],
             ]);
