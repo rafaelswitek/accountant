@@ -41,11 +41,12 @@ final class FromTo
         return $fields[$text] ?? Str::ucfirst($text);
     }
 
-    public static function status(string $field, bool $value): string
+    public static function status(string $field, ?bool $value): ?string
     {
         return match ($field) {
             'status' => $value ? 'Ativo' : 'Inativo',
             'required' => $value ? 'Sim' : 'Não',
+            default => $value
         };
     }
 }

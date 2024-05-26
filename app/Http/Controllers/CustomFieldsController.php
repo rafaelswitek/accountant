@@ -26,7 +26,7 @@ class CustomFieldsController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $field = new CustomField;
-        $field->status = $request->status;
+        $field->status = (bool) $request->status;
         $field->info = [
             'type' => $request->type,
             'label' => $request->label,
@@ -61,7 +61,7 @@ class CustomFieldsController extends Controller
     {
         $field = CustomField::findOrFail($id);
         $old = $field->toArray();
-        $field->status = $request->status;
+        $field->status = (bool) $request->status;
         $field->info = [
             'type' => $request->type,
             'label' => $request->label,
