@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\CustomField;
-use App\Models\CustomFieldValue;
 use Illuminate\Database\Seeder;
 
 class CustomFieldsSeeder extends Seeder
@@ -14,17 +13,9 @@ class CustomFieldsSeeder extends Seeder
     public function run(): void
     {
         $fields = [
-            ['id' => 1, 'status' => true, 'info' => json_encode(['type' => 'textInput', 'label' => 'Campo 1', 'placeholder' => 'Insira aqui', 'required' => false])],
-            ['id' => 2, 'status' => true, 'info' => json_encode(['type' => 'textInput', 'label' => 'Campo 2', 'placeholder' => 'Insira aqui', 'required' => true])],
+            ['id' => 1, 'status' => true, 'info' => json_encode(['type' => 'textInput', 'label' => 'CRC', 'placeholder' => 'UF-999999', 'required' => false])],
         ];
 
         CustomField::insert($fields);
-
-        $values = [
-            ['field_id' => 1, 'company_id' => 1, 'info' => json_encode(['value' => 'Teste 1'])],
-            ['field_id' => 2, 'company_id' => 1, 'info' => json_encode(['value' => 'Teste 2'])],
-        ];
-
-        CustomFieldValue::insert($values);
     }
 }

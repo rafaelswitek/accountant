@@ -13,6 +13,5 @@ class FunnelSeeder extends Seeder
     public function run(): void
     {
         Funnel::create(['name' => 'Vendas']);
-        Funnel::create(['name' => 'Marketing']);
     }
 }

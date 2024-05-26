@@ -14,11 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            CompanySeeder::class,
             CustomFieldsSeeder::class,
             FunnelSeeder::class,
             StageSeeder::class,
-            DealSeeder::class,
         ]);
     }
 }
