@@ -73,7 +73,7 @@ class ProfileController extends Controller
         $user = User::find($request->id);
 
         if (!$user || !$user->photo) {
-            $imagePath = public_path('adminlte\dist\img\avatar5.png');
+            $imagePath = public_path('img\user.png');
             $image = file_get_contents($imagePath);
 
             return response()->make($image, 200, [
