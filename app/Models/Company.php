@@ -20,6 +20,16 @@ class Company extends Model
         'status' => 'boolean'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($company) {
+            $data = request()->all();
+            $company->updateCustomFields($data);
+        });
+    }
+
     public function scopeSearch($query, $param)
     {
         return $query->where(function ($query) use ($param) {
@@ -63,5 +73,43 @@ class Company extends Model
             DB::rollback();
             Log::error('[DB][STORE][CFC]: ', ['message' => $e->getMessage()]);
         }
+    }
+
+    public function updateCustomFields(array $data): array
+    {
+        $customFields = $this->extractCustomFields($data);
+        $oldValues = [];
+        $newValues = [];
+
+        foreach ($customFields as $fieldId => $newValue) {
+            $condition = ['field_id' => $fieldId, 'company_id' => $this->id];
+
+            $customFieldOld = CustomFieldValue::where($condition)->first();
+
+            $dataForUpdate = array_merge($condition, ['info' => ['value' => $newValue]]);
+
+            $customFieldNew = CustomFieldValue::updateOrCreate($condition, $dataForUpdate);
+
+            $fieldLabel = $customFieldNew->fields->info->label;
+
+            $oldValues[$fieldLabel] = $customFieldOld->info->value ?? null;
+            $newValues[$fieldLabel] = $newValue;
+        }
+
+        return ['old' => $oldValues, 'new' => $newValues];
+    }
+
+    private function extractCustomFields(array $data): array
+    {
+        $customFields = [];
+
+        foreach ($data as $key => $value) {
+            if (strpos($key, 'custom_') === 0) {
+                $newKey = str_replace('custom_', '', $key);
+                $customFields[$newKey] = $value;
+            }
+        }
+
+        return $customFields;
     }
 }

@@ -5,31 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\ChangeHistory;
 use App\Models\Company;
 use App\Models\CustomField;
-use App\Models\CustomFieldValue;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
 class CompanyController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('company.index');
     }
 
-    public function create()
+    public function create(): View
     {
         $customFields = $this->getCustomFields(0);
         $changes = [];
         return view('company.edit', compact('customFields', 'changes'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $data = $request->all();
 
@@ -47,9 +45,7 @@ class CompanyController extends Controller
 
         $company->save();
 
-        $this->updateCustomFields($company->id, $data);
-
-        return Redirect::route('company.index');
+        return redirect()->route('company.index');
     }
 
     public function list(Request $request): LengthAwarePaginator
@@ -98,26 +94,24 @@ class CompanyController extends Controller
         $data = $request->all();
 
         $company = Company::findOrFail($id);
-        $old = $company->toArray();
-        $company->fill($data);
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
+        DB::transaction(function () use ($company, $data, $request) {
+            $old = $company->toArray();
+            $company->fill($data);
 
-            $photo = file_get_contents($image);
+            if ($request->hasFile('image')) {
+                $company->photo = $this->updateImage($request->file('image'));
+            }
 
-            $company->photo = $photo;
-        }
+            $company->save();
 
-        $company->update();
+            $new = $company->fresh()->toArray();
+            $custom = $company->updateCustomFields($data);
 
-        $new = $company->toArray();
+            ChangeHistory::log('companies', array_merge($old, $custom['old']), array_merge($new, $custom['new']));
+        });
 
-        $custom = $this->updateCustomFields($id, $data);
-
-        ChangeHistory::log('companies', array_merge($old, $custom['old']), array_merge($new, $custom['new']));
-
-        return Redirect::route('company.edit', compact('id'))->with('status', 'company-updated');
+        return redirect()->route('company.edit', ['id' => $id])->with('status', 'company-updated');
     }
 
     public function showImage(Request $request)
@@ -147,41 +141,8 @@ class CompanyController extends Controller
         }])->where('status', true)->get();
     }
 
-    private function updateCustomFields(int $companyId, array $data): array
+    private function updateImage($image)
     {
-        $customFields = $this->extractCustomFields($data);
-        $oldValues = [];
-        $newValues = [];
-
-        foreach ($customFields as $fieldId => $newValue) {
-            $condition = ['field_id' => $fieldId, 'company_id' => $companyId];
-
-            $customFieldOld = CustomFieldValue::where($condition)->first();
-
-            $dataForUpdate = array_merge($condition, ['info' => ['value' => $newValue]]);
-
-            $customFieldNew = CustomFieldValue::updateOrCreate($condition, $dataForUpdate);
-
-            $fieldLabel = $customFieldNew->fields->info->label;
-
-            $oldValues[$fieldLabel] = $customFieldOld->info->value ?? null;
-            $newValues[$fieldLabel] = $newValue;
-        }
-
-        return ['old' => $oldValues, 'new' => $newValues];
-    }
-
-    private function extractCustomFields(array $data): array
-    {
-        $customFields = [];
-
-        foreach ($data as $key => $value) {
-            if (strpos($key, 'custom_') === 0) {
-                $newKey = str_replace('custom_', '', $key);
-                $customFields[$newKey] = $value;
-            }
-        }
-
-        return $customFields;
+        return file_get_contents($image);
     }
 }
