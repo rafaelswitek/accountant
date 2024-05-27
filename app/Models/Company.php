@@ -20,16 +20,6 @@ class Company extends Model
         'status' => 'boolean'
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($company) {
-            $data = request()->all();
-            $company->updateCustomFields($data);
-        });
-    }
-
     public function scopeSearch($query, $param)
     {
         return $query->where(function ($query) use ($param) {
@@ -46,70 +36,38 @@ class Company extends Model
 
     public static function storeFromCFC(array $data)
     {
-        $upsertData = [];
         $log = [];
 
         try {
             DB::beginTransaction();
 
             foreach ($data as $item) {
-                $upsertData[] = [
-                    'name' => Text::sanitize($item['Nome']),
-                    'cnpj' => Arr::has($item, 'CpfCnpj') ? Number::onlyNumbers($item['CpfCnpj']) : null,
-                    'registry' => $item['Registro'],
-                    'status' => $item['SituacaoCadastral'] == 'Ativo',
-                ];
+                $company = self::updateOrCreate(
+                    ['document' => Number::onlyNumbers($item['CpfCnpj'])],
+                    [
+                        'name' => Text::sanitize($item['Nome']),
+                        'trade' => Text::sanitize($item['Nome']),
+                        'document' => isset($item['CpfCnpj']) ? Number::onlyNumbers($item['CpfCnpj']) : null,
+
+                        'status' => $item['SituacaoCadastral'] == 'Ativo',
+                        'origin' => "CFC"
+                    ]
+                );
+
+                CustomField::updateCustomFields(['custom_1' => $item['Registro']], $company->id);
+
                 $log[] = [
-                    'origin' => 'cfc',
+                    'origin' => 'CFC',
                     'payload' => json_encode($item)
                 ];
             }
 
-            self::upsert($upsertData, ['cnpj']);
-
             RegistrationLog::insert($log);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             Log::error('[DB][STORE][CFC]: ', ['message' => $e->getMessage()]);
         }
-    }
-
-    public function updateCustomFields(array $data): array
-    {
-        $customFields = $this->extractCustomFields($data);
-        $oldValues = [];
-        $newValues = [];
-
-        foreach ($customFields as $fieldId => $newValue) {
-            $condition = ['field_id' => $fieldId, 'company_id' => $this->id];
-
-            $customFieldOld = CustomFieldValue::where($condition)->first();
-
-            $dataForUpdate = array_merge($condition, ['info' => ['value' => $newValue]]);
-
-            $customFieldNew = CustomFieldValue::updateOrCreate($condition, $dataForUpdate);
-
-            $fieldLabel = $customFieldNew->fields->info->label;
-
-            $oldValues[$fieldLabel] = $customFieldOld->info->value ?? null;
-            $newValues[$fieldLabel] = $newValue;
-        }
-
-        return ['old' => $oldValues, 'new' => $newValues];
-    }
-
-    private function extractCustomFields(array $data): array
-    {
-        $customFields = [];
-
-        foreach ($data as $key => $value) {
-            if (strpos($key, 'custom_') === 0) {
-                $newKey = str_replace('custom_', '', $key);
-                $customFields[$newKey] = $value;
-            }
-        }
-
-        return $customFields;
     }
 }

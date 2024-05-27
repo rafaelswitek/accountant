@@ -45,6 +45,8 @@ class CompanyController extends Controller
 
         $company->save();
 
+        CustomField::updateCustomFields($data, $company->id);
+
         return redirect()->route('company.index');
     }
 
@@ -106,7 +108,7 @@ class CompanyController extends Controller
             $company->save();
 
             $new = $company->fresh()->toArray();
-            $custom = $company->updateCustomFields($data);
+            $custom = CustomField::updateCustomFields($data, $company->id);
 
             ChangeHistory::log('companies', array_merge($old, $custom['old']), array_merge($new, $custom['new']));
         });
