@@ -173,16 +173,15 @@ class CompanyController extends Controller
 
     private function extractCustomFields(array $data): array
     {
-        $customFields = array_filter($data, function ($key) {
-            return strpos($key, 'custom_') === 0;
-        }, ARRAY_FILTER_USE_KEY);
+        $customFields = [];
 
-        $filteredFields = array_reduce(array_keys($customFields), function ($result, $key) use ($customFields) {
-            $newKey = str_replace('custom_', '', $key);
-            $result[$newKey] = $customFields[$key];
-            return $result;
-        }, []);
+        foreach ($data as $key => $value) {
+            if (strpos($key, 'custom_') === 0) {
+                $newKey = str_replace('custom_', '', $key);
+                $customFields[$newKey] = $value;
+            }
+        }
 
-        return $filteredFields;
+        return $customFields;
     }
 }
