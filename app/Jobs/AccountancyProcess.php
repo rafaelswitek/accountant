@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Accountancy;
+use App\Models\Company;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,7 +31,7 @@ class AccountancyProcess implements ShouldQueue
      */
     public function handle(): void
     {
-        Accountancy::storeFromCFC($this->data);
+        Company::storeFromCFC($this->data);
         Log::channel('accountancy')->info('End', ['offset' => $this->offset, 'batchSize' => $this->batchSize]);
     }
 }
