@@ -150,20 +150,25 @@ class CompanyController extends Controller
     private function updateCustomFields(int $companyId, array $data): array
     {
         $customFields = $this->extractCustomFields($data);
-        $old = [];
-        $new = [];
-        foreach ($customFields as $key => $value) {
-            $condition = ['field_id' => $key, 'company_id' => $companyId];
-            $data = array_merge($condition, ['info' => ['value' => $value]]);
+        $oldValues = [];
+        $newValues = [];
+
+        foreach ($customFields as $fieldId => $newValue) {
+            $condition = ['field_id' => $fieldId, 'company_id' => $companyId];
 
             $customFieldOld = CustomFieldValue::where($condition)->first();
-            $customFieldNew = CustomFieldValue::updateOrCreate($condition, $data);
 
-            $old[$customFieldNew->fields->info->label] = $customFieldOld->info->value ?? null;
-            $new[$customFieldNew->fields->info->label] = $value;
+            $dataForUpdate = array_merge($condition, ['info' => ['value' => $newValue]]);
+
+            $customFieldNew = CustomFieldValue::updateOrCreate($condition, $dataForUpdate);
+
+            $fieldLabel = $customFieldNew->fields->info->label;
+
+            $oldValues[$fieldLabel] = $customFieldOld->info->value ?? null;
+            $newValues[$fieldLabel] = $newValue;
         }
 
-        return ['old' => $old, 'new' => $new];
+        return ['old' => $oldValues, 'new' => $newValues];
     }
 
     private function extractCustomFields(array $data): array
