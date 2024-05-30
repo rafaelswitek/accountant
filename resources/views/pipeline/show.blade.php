@@ -212,7 +212,7 @@
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
                 });
-        }, 100);
+        }, 300);
     })
 
     document.addEventListener('DOMContentLoaded', function() {

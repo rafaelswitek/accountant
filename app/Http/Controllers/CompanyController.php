@@ -76,6 +76,7 @@ class CompanyController extends Controller
             ->when(isset($param[1]), function ($query) use ($param) {
                 return $query->search($param[1]);
             })
+            ->limit(100)
             ->get()
             ->toArray();
     }
