@@ -15,13 +15,14 @@ class DashboardController extends Controller
             ->pluck('count', 'status')
             ->toArray();
 
+        $companyActives = $companiesCounts[1] ?? 0;
+        $companyInactives = $companiesCounts[0] ?? 0;
+
+
         $dealsCounts = Deal::select('status', DB::raw('COUNT(*) as count'))
             ->groupBy('status')
             ->pluck('count', 'status')
             ->toArray();
-
-        $companyActives = $companiesCounts[0] ?? 0;
-        $companyInactives = $companiesCounts[1] ?? 0;
 
         $dealWon = $dealsCounts['won'] ?? 0;
         $dealLost = $dealsCounts['lost'] ?? 0;
