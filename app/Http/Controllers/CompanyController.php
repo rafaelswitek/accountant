@@ -91,8 +91,8 @@ class CompanyController extends Controller
             ->where('payload', 'like', '%"id": ' . $id . '%')
             ->get();
         $maskCnpj = Mask::CNPJ($company->document);
-        $logCFC = RegistrationLog::where('payload', 'like', '%' . $maskCnpj . '%')->get();
-        $logCNPJWS = RegistrationLog::where('payload', 'like', '%' . $company->document . '%')->get();
+        $logCFC = RegistrationLog::where('payload', 'like', '%' . $maskCnpj . '%')->limit(1)->orderByDesc('id')->pluck('payload');
+        $logCNPJWS = RegistrationLog::where('payload', 'like', '%' . $company->document . '%')->limit(1)->orderByDesc('id')->pluck('payload');
 
         return view('company.edit', compact('company', 'customFields', 'changes', 'logCFC', 'logCNPJWS'));
     }
