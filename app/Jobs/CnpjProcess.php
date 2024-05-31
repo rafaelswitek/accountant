@@ -31,7 +31,7 @@ class CnpjProcess implements ShouldQueue
             $api = new CnpjWsService();
             $companies = Company::whereNull('email')
                 ->whereNull('phone')
-                ->limit(20)
+                ->limit(100)
                 ->get();
 
             foreach ($companies as $company) {
