@@ -27,6 +27,8 @@ class CnpjProcess implements ShouldQueue
      */
     public function handle(): void
     {
+        $current = null;
+        $result = null;
         try {
             $api = new CnpjWsService();
             $companies = Company::whereNull('email')
@@ -35,11 +37,12 @@ class CnpjProcess implements ShouldQueue
                 ->get();
 
             foreach ($companies as $company) {
+                $current = $company->document;
                 $result = $api->get($company->document);
                 $company->updateFromCNPJWS($result);
             }
         } catch (\Exception $e) {
-            Log::error('[JOB][CnpjProcess]: ', ['message' => $e->getMessage()]);
+            Log::error('[JOB][CnpjProcess]: ', ['message' => $e->getMessage(), 'current' => $current, 'result' => $result]);
         }
     }
 }
