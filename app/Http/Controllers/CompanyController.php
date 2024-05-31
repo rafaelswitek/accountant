@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Mask;
 use App\Models\ChangeHistory;
 use App\Models\Company;
 use App\Models\CustomField;
+use App\Models\RegistrationLog;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -88,8 +90,11 @@ class CompanyController extends Controller
         $changes = ChangeHistory::where('table', 'companies')
             ->where('payload', 'like', '%"id": ' . $id . '%')
             ->get();
+        $maskCnpj = Mask::CNPJ($company->document);
+        $logCFC = RegistrationLog::where('payload', 'like', '%' . $maskCnpj . '%')->get();
+        $logCNPJWS = RegistrationLog::where('payload', 'like', '%' . $company->document . '%')->get();
 
-        return view('company.edit', compact('company', 'customFields', 'changes'));
+        return view('company.edit', compact('company', 'customFields', 'changes', 'logCFC', 'logCNPJWS'));
     }
 
     public function update(Request $request, int $id): RedirectResponse

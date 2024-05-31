@@ -11,5 +11,9 @@ class RegistrationLog extends Model
         'payload',
     ];
 
+    protected $casts = [
+        'payload' => 'object',
+    ];
+
     public $timestamps = true;
 }
