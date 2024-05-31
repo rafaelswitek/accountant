@@ -20,7 +20,6 @@ class CnpjProcess implements ShouldQueue
      */
     public function __construct()
     {
-        Log::info('CnpjProcess');
     }
 
     /**
