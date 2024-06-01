@@ -26,7 +26,9 @@ class CompanyController extends Controller
     {
         $customFields = $this->getCustomFields(0);
         $changes = [];
-        return view('company.edit', compact('customFields', 'changes'));
+        $logCFC =  [];
+        $logCNPJWS = [];
+        return view('company.edit', compact('customFields', 'changes', 'logCFC', 'logCNPJWS'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -127,7 +129,7 @@ class CompanyController extends Controller
         $company = Company::find($request->id);
 
         if (!$company || !$company->photo) {
-            $imagePath = public_path('img\company.png');
+            $imagePath = public_path('img' . DIRECTORY_SEPARATOR . 'company.png');
             $image = file_get_contents($imagePath);
 
             return response()->make($image, 200, [

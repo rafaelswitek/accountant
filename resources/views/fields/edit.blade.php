@@ -26,7 +26,7 @@
     <div id="default-styled-tab-content">
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-fields" role="tabpanel"
             aria-labelledby="fields-tab">
-            <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+            <div class="py-8 px-4 mx-auto max-w-6xl lg:py-16">
                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Campos personalizados</h2>
                 @if (isset($fields))
                     <form method="POST" action="{{ route('fields.update', ['id' => $fields->id]) }}">
@@ -95,7 +95,7 @@
         </div>
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-history" role="tabpanel"
             aria-labelledby="history-tab">
-            <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+            <div class="py-8 px-4 mx-auto max-w-6xl lg:py-16">
                 <ol class="relative border-s border-gray-200 dark:border-gray-700">
                     @foreach ($changes as $change)
                         <li class="mb-10 ms-6">

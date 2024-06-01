@@ -10,7 +10,7 @@
 ])
 
 @if ($label && $label != 'id')
-    <div class="w-full max-w-[16rem] mt-2 ml-2">
+    <div class="w-full max-w-6xl mt-2 ml-2">
         <div class="relative">
             <label for="{{ $label }}-button" class="sr-only">{{ $label }}</label>
             <input id="{{ $label }}-button" name="{{ $label }}" type="text" class="{{ $class }}"
