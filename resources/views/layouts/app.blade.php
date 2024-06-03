@@ -29,6 +29,27 @@
         <main>
             <x-notification />
             {{ $slot }}
+
+            <style>
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+
+                .spinner {
+                    border-top-color: transparent;
+                    animation: spin 1s linear infinite;
+                }
+            </style>
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+                id="loading">
+                <div class="w-16 h-16 border-4 border-blue-500 rounded-full spinner"></div>
+            </div>
         </main>
     </div>
 
@@ -72,6 +93,14 @@
                 }
             });
 
+        }
+
+        function showLoading() {
+            document.getElementById('loading').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
