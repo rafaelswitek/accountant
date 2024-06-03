@@ -7,7 +7,7 @@
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" x-show="show"
             x-data="{ show: {{ isset($company) ? 1 : 0 }} }" data-tabs-toggle="#default-styled-tab-content"
-            data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500"
+            data-tabs-active-classes="text-indigo-600 hover:text-indigo-600 dark:text-indigo-500 dark:hover:text-indigo-500 border-indigo-600 dark:border-indigo-500"
             data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
             role="tablist">
             <li class="me-2" role="presentation">
@@ -193,20 +193,18 @@
         </div>
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-logs" role="tabpanel"
             aria-labelledby="logs-tab">
-            <p>CFC:</p>
-                <blockquote
-                    class="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
-                    <p class="text-xl italic font-medium leading-relaxed text-gray-900 dark:text-white">
-                        <pre>{{ json_encode($logCFC, JSON_PRETTY_PRINT) }}</pre>
-                    </p>
-                </blockquote>
-                <p>CNPJ WS:</p>
-                <blockquote
-                    class="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
-                    <p class="text-xl italic font-medium leading-relaxed text-gray-900 dark:text-white">
-                        <pre>{{ json_encode($logCNPJWS, JSON_PRETTY_PRINT) }}</pre>
-                    </p>
-                </blockquote>
+            <p class="text-black dark:text-white">CFC:</p>
+            <blockquote class="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+                <p class="text-xl italic font-medium leading-relaxed text-gray-900 dark:text-white">
+                    <pre class="text-black dark:text-white">{{ json_encode($logCFC, JSON_PRETTY_PRINT) }}</pre>
+                </p>
+            </blockquote>
+            <p class="text-black dark:text-white">CNPJ WS:</p>
+            <blockquote class="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+                <p class="text-xl italic font-medium leading-relaxed text-gray-900 dark:text-white">
+                    <pre class="text-black dark:text-white">{{ json_encode($logCNPJWS, JSON_PRETTY_PRINT) }}</pre>
+                </p>
+            </blockquote>
         </div>
     </div>
 
