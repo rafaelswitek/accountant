@@ -83,6 +83,7 @@
                     document.getElementById('totalResults').innerHTML = results.total
                 });
                 pagination(results.links)
+                loadActionButtons() 
             })
             .catch(error => {
                 console.error('Erro:', error);

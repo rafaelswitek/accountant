@@ -71,14 +71,8 @@
                     </td>
                 `
             }
-        </script>
-    @endPushOnce
 
-    @include('components.custom.table')
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function checkElements() {
+            function loadActionButtons() {
                 const btnGetCompany = document.getElementsByClassName('getCompany');
                 if (btnGetCompany.length > 0) {
                     for (let i = 0; i < btnGetCompany.length; i++) {
@@ -109,8 +103,8 @@
                                 })
                                 .then(response => {
                                     email.innerText = response?.estabelecimento?.email ?? '-'
-                                    phone.innerText = response?.estabelecimento?.ddd1 + response
-                                        ?.estabelecimento?.telefone1 ?? '-'
+                                    phone.innerText = response?.estabelecimento ? `${response.estabelecimento.ddd1}${response
+                                        .estabelecimento.telefone1}` : '-'
 
                                     showAlert(`Empresa atualizada`)
                                     hideLoading()
@@ -122,10 +116,11 @@
                         });
                     }
                 } else {
-                    setTimeout(checkElements, 300);
+                    setTimeout(loadActionButtons, 300);
                 }
             }
-            checkElements();
-        });
-    </script>
+        </script>
+    @endPushOnce
+
+    @include('components.custom.table')
 </x-app-layout>

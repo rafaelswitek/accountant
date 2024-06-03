@@ -62,6 +62,7 @@
                     </td>
                 `
             }
+            function loadActionButtons (){}
         </script>
     @endPushOnce
 

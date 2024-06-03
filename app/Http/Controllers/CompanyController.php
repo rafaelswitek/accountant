@@ -7,6 +7,9 @@ use App\Models\ChangeHistory;
 use App\Models\Company;
 use App\Models\CustomField;
 use App\Models\RegistrationLog;
+use App\Services\CnpjWsService;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -142,6 +145,23 @@ class CompanyController extends Controller
             'Content-Type' => 'image/jpeg',
             'Content-Disposition' => 'inline; filename="imagem.jpg"',
         ]);
+    }
+
+    public function sync(int $id)
+    {
+        try {
+            $company = Company::find($id);
+            if ($company->updated_at->diffInDays(Carbon::now()) > 7) {
+                $api = new CnpjWsService();
+                $result = $api->get($company->document);
+                $company->updateFromCNPJWS($result);
+                return response()->json($result, 200);
+            }
+
+            return response()->json(['message' => 'Já está atualizado'], 406);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     private function getCustomFields(int $companyId): Collection
