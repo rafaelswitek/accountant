@@ -151,6 +151,10 @@ class CompanyController extends Controller
     {
         try {
             $company = Company::find($id);
+            if ($company->document == null) {
+                return response()->json(['message' => 'Empresa sem CNPJ'], 404);
+            }
+
             if ($company->updated_at->diffInDays(Carbon::now()) > 7) {
                 $api = new CnpjWsService();
                 $result = $api->get($company->document);

@@ -33,6 +33,16 @@
         <script>
             const resource = 'company';
 
+            function returnStatus(status) {
+                return `
+                    <div class="flex items-center">
+                        ${status ? 
+                        '<div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Ativo' :
+                        '<div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Inativo' }
+                    </div>
+                `
+            }
+
             function parseData(data) {
                 return `
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -49,12 +59,8 @@
                     <td class="px-6 py-4 email">
                         ${data.email ?? '-'}
                     </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            ${data.status ? 
-                            '<div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Ativo' :
-                            '<div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Inativo' }
-                        </div>
+                    <td class="px-6 py-4 status">
+                        ${returnStatus(data.status)}
                     </td>
                     <td class="px-6 py-4" data-company-id="${data.id}">
                         <a href="/company/${data.id}/edit" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -80,6 +86,7 @@
                             var node = this.closest('td');
                             let phone = this.closest('tr').querySelector('.phone')
                             let email = this.closest('tr').querySelector('.email')
+                            let status = this.closest('tr').querySelector('.status')
                             var companyId = node.getAttribute('data-company-id');
 
                             showLoading()
@@ -105,6 +112,7 @@
                                     email.innerText = response?.estabelecimento?.email ?? '-'
                                     phone.innerText = response?.estabelecimento ? `${response.estabelecimento.ddd1}${response
                                         .estabelecimento.telefone1}` : '-'
+                                    status.innerHTML = response?.estabelecimento ? returnStatus(response.estabelecimento.situacao_cadastral == 'Ativa') : '-'
 
                                     showAlert(`Empresa atualizada`)
                                     hideLoading()
