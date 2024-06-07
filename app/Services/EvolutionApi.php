@@ -20,7 +20,6 @@ class EvolutionApi
             "token" => env('EVO_TOKEN'),
             "qrcode" => true,
             "mobile" => false,
-            "number" => "5562992085795",
             "integration" => "WHATSAPP-BAILEYS"
         ];
 
