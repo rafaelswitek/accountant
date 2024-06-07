@@ -5,6 +5,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomFieldsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/custom-fields/{id}/edit', [CustomFieldsController::class, 'edit'])->name('fields.edit');
     Route::put('/custom-fields/{id}', [CustomFieldsController::class, 'update'])->name('fields.update');
     Route::get('/custom-fields/list', [CustomFieldsController::class, 'list'])->name('fields.list');
+
+    Route::get('/integration', [IntegrationController::class, 'index'])->name('integration.index');
+    Route::post('/integration/instance', [IntegrationController::class, 'createInstance'])->name('integration.createInstance');
+    Route::get('/integration/instance/state', [IntegrationController::class, 'getConnectionState'])->name('integration.getConnectionState');
 });
 
 require __DIR__ . '/auth.php';

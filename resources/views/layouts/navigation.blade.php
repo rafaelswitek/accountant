@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('fields.index')" :active="request()->routeIs('fields.*')">
                         {{ __('Custom Fields') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('integration.index')" :active="request()->routeIs('integration.*')">
+                        {{ __('Integrations') }}
+                    </x-nav-link>
                 </div>
             </div>
 
