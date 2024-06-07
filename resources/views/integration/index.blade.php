@@ -7,7 +7,7 @@
 
     <div class="flex justify-center items-center h-[60vh] m-0 bg-gray-100">
         <button type="button" id="connectWhatsapp"
-            class="text-white bg-[#25D366] hover:bg-[#25D366]/90 focus:ring-4 focus:outline-none focus:ring-[#25D366]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#25D366]/55 me-2 mb-2 {{ isset($whatsapp) ? 'hidden' : '' }}">
+            class="text-white bg-[#25D366] hover:bg-[#25D366]/90 focus:ring-4 focus:outline-none focus:ring-[#25D366]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#25D366]/55 me-2 mb-2 {{ !isset($whatsapp->payload) ? 'hidden' : '' }}">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="none" viewBox="0 0 24 24">
                 <path fill="currentColor" fill-rule="evenodd"
@@ -20,10 +20,15 @@
             Conectar WhatsApp
         </button>
 
+        @php
+            $isOpen = isset($whatsapp->payload->state) && $whatsapp->payload->state != 'open';
+            $hasQrCode = isset($whatsapp->payload->qrCode);
+        @endphp
+
         <figure
-            class="max-w-lg me-2 mb-2 {{ isset($whatsapp->payload->state) && $whatsapp->payload->state != 'open' && isset($whatsapp->payload->qrCode) ? '' : 'hidden' }}"
+            class="max-w-lg me-2 mb-2 {{ $isOpen && $hasQrCode ? '' : 'hidden' }}"
             id="qrCodeDiv">
-            <img class="h-auto max-w-full rounded-lg" src="{{ $whatsapp->payload->qrCode }}" alt="image description"
+            <img class="h-auto max-w-full rounded-lg" src="{{ $hasQrCode ? $whatsapp->payload->qrCode : null }}" alt="image description"
                 id="qrCode">
             <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Leia o QR Code para integrar
                 ao WhatsApp</figcaption>
