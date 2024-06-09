@@ -17,7 +17,7 @@ class IntegrationSeeder extends Seeder
         Integration::create([
             'source' => 'whatsapp',
             'payload' => [
-                'state' => 'connecting',
+                'state' => '',
                 'qrCode' => '',
                 'user' => [
                     'name' => '',
