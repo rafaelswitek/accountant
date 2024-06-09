@@ -15,10 +15,10 @@ class EvolutionApi
         $this->url = 'http://localhost:8080';
     }
 
-    public function createInstance(): array
+    public function createInstance(string $instanceName): array
     {
         $data = [
-            "instanceName" => "Teste",
+            "instanceName" => $instanceName,
             "token" => env('EVO_TOKEN'),
             "qrcode" => true,
             "mobile" => false,
@@ -28,9 +28,19 @@ class EvolutionApi
         return $this->makeRequest('post', 'instance/create', $data);
     }
 
-    public function getConnectionState(): array
+    public function getConnectionState(string $instanceName): array
     {
-        return $this->makeRequest('get', 'instance/connectionState/Teste');
+        return $this->makeRequest('get', "instance/connectionState/{$instanceName}");
+    }
+
+    public function getInstanceByName(string $instanceName): array
+    {
+        return $this->makeRequest('get', "instance/fetchInstances?instanceName={$instanceName}");
+    }
+
+    public function getProfile(string $instanceName, string $number): array
+    {
+        return $this->makeRequest('post', "chat/fetchProfile/{$instanceName}", ['number' => $number]);
     }
 
     private function makeRequest(string $method, string $path, array $data = []): array

@@ -44,4 +44,16 @@ class Mask
 
         return $mask;
     }
+
+    public static function numberFromOwner(string $phoneNumber)
+    {
+        $phoneNumber = preg_replace('/@s\.whatsapp\.net$/', '', $phoneNumber);
+
+        $countryCode = substr($phoneNumber, 0, 2);
+        $areaCode = substr($phoneNumber, 2, 2);
+        $firstPart = substr($phoneNumber, 4, 4);
+        $secondPart = substr($phoneNumber, 8);
+
+        return $countryCode . " " . $areaCode . " " . $firstPart . "-" . $secondPart;
+    }
 }

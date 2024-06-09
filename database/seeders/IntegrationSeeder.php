@@ -20,11 +20,15 @@ class IntegrationSeeder extends Seeder
                 'state' => '',
                 'qrCode' => '',
                 'user' => [
+                    'number' => '',
                     'name' => '',
                     'picture' => '',
                     'status' => '',
                 ],
-                'instanceId' => ''
+                'instance' => [
+                    'id' => '',
+                    'name' => ''
+                ]
             ]
         ]);
     }

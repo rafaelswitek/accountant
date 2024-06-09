@@ -5,9 +5,14 @@
         </h2>
     </x-slot>
 
+    @php
+        $isOpen = $whatsapp->state == 'open';
+        $hasQrCode = !empty($whatsapp->qrCode);
+    @endphp
+
     <div class="flex justify-center items-center h-[60vh] m-0 bg-gray-100">
-        <button type="button" id="connectWhatsapp"
-            class="text-white bg-[#25D366] hover:bg-[#25D366]/90 focus:ring-4 focus:outline-none focus:ring-[#25D366]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#25D366]/55 me-2 mb-2 {{ !isset($whatsapp->payload) ? 'hidden' : '' }}">
+        <button type="button" id="btnConnectWhatsapp"
+            class="text-white bg-[#25D366] hover:bg-[#25D366]/90 focus:ring-4 focus:outline-none focus:ring-[#25D366]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#25D366]/55 me-2 mb-2 {{ !$isOpen && !$hasQrCode ? '' : 'hidden' }}">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                 fill="none" viewBox="0 0 24 24">
                 <path fill="currentColor" fill-rule="evenodd"
@@ -20,22 +25,15 @@
             Conectar WhatsApp
         </button>
 
-        @php
-            $isOpen = isset($whatsapp->payload->state) && $whatsapp->payload->state != 'open';
-            $hasQrCode = isset($whatsapp->payload->qrCode);
-        @endphp
-
-        <figure
-            class="max-w-lg me-2 mb-2 {{ $isOpen && $hasQrCode ? '' : 'hidden' }}"
-            id="qrCodeDiv">
-            <img class="h-auto max-w-full rounded-lg" src="{{ $hasQrCode ? $whatsapp->payload->qrCode : null }}" alt="image description"
+        <figure class="max-w-lg me-2 mb-2 {{ $hasQrCode ? '' : 'hidden' }}" id="divQrCode">
+            <img class="h-auto max-w-full rounded-lg" src="{{ $whatsapp->qrCode ?? '' }}" alt="image description"
                 id="qrCode">
             <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Leia o QR Code para integrar
                 ao WhatsApp</figcaption>
         </figure>
 
-        <div
-            class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hidden">
+        <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 {{ $isOpen ? '' : 'hidden' }}"
+            id="divProfile">
             <div class="flex justify-end px-4 pt-4">
                 <button id="dropdownButton" data-dropdown-toggle="dropdown"
                     class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
@@ -68,17 +66,23 @@
                 </div>
             </div>
             <div class="flex flex-col items-center pb-10">
-                <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
-                    src="https://pps.whatsapp.net/v/t61.24694-24/419689634_765170105466612_1451057841561953213_n.jpg?ccb=11-4&oh=01_Q5AaIA2DgcWt9dPyQWVSFxz-NSjBf27yJ8cVL127k7CKxZLT&oe=666FA992&_nc_sid=e6ed6c&_nc_cat=103"
-                    alt="Bonnie image" />
-                <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">EvolutionAPI</h5>
-                <span class="text-sm text-gray-500 dark:text-gray-400">556293638155@s.whatsapp.net</span>
+                <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ $whatsapp->user->picture ?? '' }}"
+                    alt="{{ $whatsapp->user->name ?? 'Imagem do perfil' }}" id="profilePicture" />
+                <span class="flex flex-row items-end">
+                    <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white mr-2" id="profileName">
+                        {{ $whatsapp->user->name ?? '' }}
+                    </h5>
+                    <h6 class="mb-1 text-xd font-medium text-gray-900 dark:text-white" id="profileNumber">
+                        ({{ $whatsapp->user->number ?? '' }})
+                    </h6>
+                </span>
+                <span class="text-sm text-gray-500 dark:text-gray-400"
+                    id="profileStatus">{{ $whatsapp->user->status ?? '' }}</span>
                 <div class="flex mt-4 md:mt-6">
                     <a href="#"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add
-                        friend</a>
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Mensagens</a>
                     <a href="#"
-                        class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Message</a>
+                        class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Contatos</a>
                 </div>
             </div>
         </div>
@@ -88,171 +92,154 @@
     </div>
 
     <script>
-        const connectWhatsapp = document.getElementById('connectWhatsapp')
-        const qrCodeDiv = document.getElementById('qrCodeDiv')
-        const qrCode = document.getElementById('qrCode')
-        connectWhatsapp.addEventListener('click', function() {
-            showLoading()
-            fetch('integration/instance', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector(
-                                'meta[name="csrf-token"]')
-                            .getAttribute('content')
-                    },
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(data => {
-                            throw new Error(data.message ||
-                                'Erro na solicitação');
-                        });
-                    }
-                    return response.json()
-                })
-                .then(response => {
-                    console.log(response)
-                    connectWhatsapp.classList.add('hidden')
-                    qrCodeDiv.classList.remove('hidden')
-                    qrCode.src = response.payload.qrCode
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnConnectWhatsapp = document.getElementById('btnConnectWhatsapp')
+            const divQrCode = document.getElementById('divQrCode')
+            const divProfile = document.getElementById('divProfile')
+            const qrCode = document.getElementById('qrCode')
+            const profileName = document.getElementById('profileName')
+            const profileNumber = document.getElementById('profileNumber')
+            const profileStatus = document.getElementById('profileStatus')
+            const profilePicture = document.getElementById('profilePicture')
+
+            let timerId
+
+            btnConnectWhatsapp.addEventListener('click', function() {
+                showLoading()
+                connectToIntegration()
+            })
+
+            async function connectToIntegration() {
+                try {
+                    const response = await httpClient("{{ route('integration.createInstance') }}", 'POST')
+                    btnConnectWhatsapp.classList.add('hidden')
+                    divQrCode.classList.remove('hidden')
+                    qrCode.src = response.qrCode
                     hideLoading()
                     getState()
-                })
-                .catch(error => {
+                } catch (error) {
                     hideLoading()
                     showAlert(error.message)
-                });
-        });
-
-        let timerId;
-
-        function getState() {
-            fetch('integration/instance/state', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(data => {
-                            throw new Error(data.message || 'Erro na solicitação');
-                        });
-                    }
-                    return response.json();
-                })
-                .then(response => {
-                    console.log(response);
-                    if (response.state !== 'open') {
-                        timerId = setTimeout(getState, 3000);
-                    } else {
-                        qrCodeDiv.classList.add('hidden')
-                    }
-                })
-                .catch(error => {
-                    showAlert(error.message);
-                });
-        }
-
-        const messages = document.getElementById('messages')
-
-        function createMessage(id, message, author, fromMe) {
-            return `
-                <div class="flex items-start gap-2.5 m-4 ${fromMe ? '':'flex-row-reverse'}">
-                    <img class="w-8 h-8 rounded-full"
-                        src="https://pps.whatsapp.net/v/t61.24694-24/419689634_765170105466612_1451057841561953213_n.jpg?ccb=11-4&oh=01_Q5AaIA2DgcWt9dPyQWVSFxz-NSjBf27yJ8cVL127k7CKxZLT&oe=666FA992&_nc_sid=e6ed6c&_nc_cat=103"
-                        alt="Jese image">
-                    <div
-                        class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-${fromMe ? 'green':'blue'}-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                        <div class="flex items-center space-x-2 rtl:space-x-reverse  ${fromMe ? '':'justify-end'}">
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">${author}</span>
-                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
-                        </div>
-                        <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">${message}</p>
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span>
-                    </div>
-                    <button id="dropdownMenuIconButton-${id}" data-dropdown-toggle="dropdownDots-${id}"
-                        data-dropdown-placement="bottom-end"
-                        class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
-                        type="button">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                            <path
-                                d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                        </svg>
-                    </button>
-                    <div id="dropdownDots-${id}"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton-${id}">
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Forward</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Copy</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            `
-        }
-
-        // fetchMessages()
-
-        function fetchMessages() {
-            const raw = JSON.stringify({
-                "where": {
-                    "key": {
-                        "remoteJid": "556292085795"
-                    }
                 }
-            });
-            fetch('http://localhost:8080/chat/findMessages/Teste', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': 'mude-me'
-                    },
-                    body: raw,
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(data => {
-                            throw new Error(data.message || 'Erro na solicitação');
-                        });
-                    }
-                    return response.json();
-                })
-                .then(response => {
-                    console.log(response);
-                    response.forEach(element => {
-                        console.log(element);
-                        const div = document.createElement('div');
-                        div.innerHTML = createMessage(element.key.id, element.message.conversation, element
-                            .pushName, element.key.fromMe)
-                        messages.appendChild(div)
+            }
 
-                    });
-                })
-                .catch(error => {
-                    showAlert(error.message);
-                });
-        }
+            async function getState() {
+                try {
+                    const response = await httpClient("{{ route('integration.getConnectionState') }}", 'GET')
+                    if (response.state !== 'open') {
+                        timerId = setTimeout(getState, 3000)
+                    } else {
+                        profileName.innerText = response.user.name
+                        profileNumber.innerText = response.user.number
+                        profileStatus.innerText = response.user.status
+                        profilePicture.src = response.user.picture
+
+                        divQrCode.classList.add('hidden')
+                        divProfile.classList.remove('hidden')
+                    }
+                } catch (error) {
+                    showAlert(error.message)
+                }
+            }
+        })
+
+        // const messages = document.getElementById('messages')
+
+        // function createMessage(id, message, author, fromMe) {
+        //     return `
+    //         <div class="flex items-start gap-2.5 m-4 ${fromMe ? '':'flex-row-reverse'}">
+    //             <img class="w-8 h-8 rounded-full"
+    //                 src="https://pps.whatsapp.net/v/t61.24694-24/419689634_765170105466612_1451057841561953213_n.jpg?ccb=11-4&oh=01_Q5AaIA2DgcWt9dPyQWVSFxz-NSjBf27yJ8cVL127k7CKxZLT&oe=666FA992&_nc_sid=e6ed6c&_nc_cat=103"
+    //                 alt="Jese image">
+    //             <div
+    //                 class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-${fromMe ? 'green':'blue'}-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+    //                 <div class="flex items-center space-x-2 rtl:space-x-reverse  ${fromMe ? '':'justify-end'}">
+    //                     <span class="text-sm font-semibold text-gray-900 dark:text-white">${author}</span>
+    //                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
+    //                 </div>
+    //                 <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">${message}</p>
+    //                 <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span>
+    //             </div>
+    //             <button id="dropdownMenuIconButton-${id}" data-dropdown-toggle="dropdownDots-${id}"
+    //                 data-dropdown-placement="bottom-end"
+    //                 class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
+    //                 type="button">
+    //                 <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+    //                     xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+    //                     <path
+    //                         d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+    //                 </svg>
+    //             </button>
+    //             <div id="dropdownDots-${id}"
+    //                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
+    //                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton-${id}">
+    //                     <li>
+    //                         <a href="#"
+    //                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
+    //                     </li>
+    //                     <li>
+    //                         <a href="#"
+    //                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Forward</a>
+    //                     </li>
+    //                     <li>
+    //                         <a href="#"
+    //                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Copy</a>
+    //                     </li>
+    //                     <li>
+    //                         <a href="#"
+    //                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
+    //                     </li>
+    //                     <li>
+    //                         <a href="#"
+    //                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+    //                     </li>
+    //                 </ul>
+    //             </div>
+    //         </div>
+    //     `
+        // }
+
+        // // fetchMessages()
+
+        // function fetchMessages() {
+        //     const raw = JSON.stringify({
+        //         "where": {
+        //             "key": {
+        //                 "remoteJid": "556292085795"
+        //             }
+        //         }
+        //     })
+        //     fetch('http://localhost:8080/chat/findMessages/Teste', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'apikey': 'mude-me'
+        //             },
+        //             body: raw,
+        //         })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 return response.json().then(data => {
+        //                     throw new Error(data.message || 'Erro na solicitação')
+        //                 })
+        //             }
+        //             return response.json()
+        //         })
+        //         .then(response => {
+        //             console.log(response)
+        //             response.forEach(element => {
+        //                 console.log(element)
+        //                 const div = document.createElement('div')
+        //                 div.innerHTML = createMessage(element.key.id, element.message.conversation, element
+        //                     .pushName, element.key.fromMe)
+        //                 messages.appendChild(div)
+
+        //             })
+        //         })
+        //         .catch(error => {
+        //             showAlert(error.message)
+        //         })
+        // }
     </script>
 
 </x-app-layout>

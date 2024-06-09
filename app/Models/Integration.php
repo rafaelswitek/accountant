@@ -13,6 +13,7 @@ class Integration extends Model
 
     protected $casts = [
         'payload' => 'object',
+        'payload.user' => 'object',
     ];
 
     public $timestamps = true;

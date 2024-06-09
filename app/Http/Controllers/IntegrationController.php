@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Mask;
 use App\Models\Integration;
 use App\Services\EvolutionApi;
 use Exception;
@@ -21,25 +22,28 @@ class IntegrationController extends Controller
         $whatsapp = Integration::where('source', 'whatsapp')->first();
 
         return view('integration.index', [
-            'whatsapp' => $whatsapp,
+            'whatsapp' => $whatsapp->payload,
         ]);
     }
 
     public function createInstance(): JsonResponse
     {
         try {
-            $response = $this->evolutionApi->createInstance();
+            $response = $this->evolutionApi->createInstance(auth()->user()->email);
 
-            $whatsapp = Integration::create([
-                'source' => 'whatsapp',
-                'payload' => [
-                    'instanceId' => $response['instance']['instanceId'],
-                    'state' => "connecting",
-                    'qrCode' => $response['qrcode']['base64'],
-                ]
+            $whatsapp = Integration::where('source', 'whatsapp')->first();
+            $payload = $whatsapp->payload;
+
+            $payload->state = $response['instance']['state'] ?? $payload->state;
+            $payload->qrCode = $response['qrcode']['base64'] ?? $payload->qrCode;
+            $payload->instance->id = $response['instance']['instanceId'] ?? $payload->instance->id;
+            $payload->instance->name = $response['instance']['instanceName'] ?? $payload->instance->name;
+
+            $whatsapp->update([
+                'payload' => $payload
             ]);
 
-            return response()->json($whatsapp);
+            return response()->json($whatsapp->payload);
         } catch (Exception $e) {
             Log::error('Failed to create instance', [
                 'error' => $e->getMessage(),
@@ -56,17 +60,30 @@ class IntegrationController extends Controller
     public function getConnectionState(): JsonResponse
     {
         try {
-            $response = $this->evolutionApi->getConnectionState();
-
             $whatsapp = Integration::where('source', 'whatsapp')->first();
             $payload = $whatsapp->payload;
-            $payload['state'] = $response['instance']['state'];
+
+            $response = $this->evolutionApi->getConnectionState($payload->instance->name);
+
+            $payload->state = $response['instance']['state'] ?? $payload->state;
+
+            if ($payload->state == 'open') {
+                $payload->qrCode = null;
+                try {
+                    $this->getProfileData($payload);
+                } catch (Exception $e) {
+                    Log::error('Failed to get profile', [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                }
+            }
 
             $whatsapp->update([
                 'payload' => $payload
             ]);
 
-            return response()->json($whatsapp);
+            return response()->json($whatsapp->payload);
         } catch (Exception $e) {
             Log::error('Failed to get state', [
                 'error' => $e->getMessage(),
@@ -77,6 +94,19 @@ class IntegrationController extends Controller
                 'error' => 'Failed to get state',
                 'message' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    private function getProfileData(object &$payload): void
+    {
+        $response = $this->evolutionApi->getInstanceByName($payload->instance->name);
+        if (is_array($response) && isset($response[0]['instance'])) {
+            $instance = $response[0]['instance'];
+
+            $payload->user->number = Mask::numberFromOwner($instance['owner']) ?? $payload->user->number;
+            $payload->user->picture = $instance['profilePictureUrl'] ?? $payload->user->picture;
+            $payload->user->status = $instance['profileStatus'] ?? $payload->user->status;
+            $payload->user->name = $instance['profileName'] ?? $payload->user->name;
         }
     }
 }
