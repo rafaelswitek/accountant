@@ -64,6 +64,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/integration', [IntegrationController::class, 'index'])->name('integration.index');
     Route::post('/integration/instance', [IntegrationController::class, 'createInstance'])->name('integration.createInstance');
     Route::get('/integration/instance/state', [IntegrationController::class, 'getConnectionState'])->name('integration.getConnectionState');
+    Route::get('/integration/whatsapp/messages', [IntegrationController::class, 'getMessages'])->name('integration.getMessages');
+    Route::get('/integration/whatsapp/contacts', [IntegrationController::class, 'getContacts'])->name('integration.getContacts');
 });
 
 require __DIR__ . '/auth.php';

@@ -97,6 +97,52 @@ class IntegrationController extends Controller
         }
     }
 
+    public function getMessages(): JsonResponse
+    {
+        try {
+            $whatsapp = Integration::where('source', 'whatsapp')->first();
+            $payload = $whatsapp->payload;
+
+            $response = $this->evolutionApi->getMessages($payload->instance->name);
+
+            return response()->json($response);
+        } catch (Exception $e) {
+            Log::error('Failed to get messages', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'error' => 'Failed to get messages',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getContacts(): View
+    {
+        $whatsapp = Integration::where('source', 'whatsapp')->first();
+        $payload = $whatsapp->payload;
+
+        $response = $this->evolutionApi->getContacts($payload->instance->name);
+
+        return view('integration.contacts', [
+            'contacts' => $response,
+        ]);
+    }
+
+    public function getChats(): View
+    {
+        $whatsapp = Integration::where('source', 'whatsapp')->first();
+        $payload = $whatsapp->payload;
+
+        $response = $this->evolutionApi->getChats($payload->instance->name);
+
+        return view('integration.chats', [
+            'chats' => $response,
+        ]);
+    }
+
     private function getProfileData(object &$payload): void
     {
         $response = $this->evolutionApi->getInstanceByName($payload->instance->name);

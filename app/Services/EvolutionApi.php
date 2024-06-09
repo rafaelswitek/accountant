@@ -40,7 +40,37 @@ class EvolutionApi
 
     public function getProfile(string $instanceName, string $number): array
     {
-        return $this->makeRequest('post', "chat/fetchProfile/{$instanceName}", ['number' => $number]);
+        $data = ['number' => $number];
+        return $this->makeRequest('post', "chat/fetchProfile/{$instanceName}", $data);
+    }
+
+    public function getMessages(string $instanceName, ?string $number = null): array
+    {
+        if ($number) {
+            $data = [
+                "where" => [
+                    "key" => [
+                        "remoteJid" => $number
+                    ]
+                ]
+            ];
+        }
+        return $this->makeRequest('post', "chat/findMessages/{$instanceName}", $data);
+    }
+
+    public function getContacts(string $instanceName): array
+    {
+        return $this->makeRequest('post', "chat/findContacts/{$instanceName}");
+    }
+
+    public function getChats(string $instanceName): array
+    {
+        $data = [
+            "sort" => [
+                "pushName" => true
+            ]
+        ];
+        return $this->makeRequest('post', "chat/findChats/{$instanceName}");
     }
 
     private function makeRequest(string $method, string $path, array $data = []): array
